@@ -1,0 +1,25 @@
+{
+  "name": "@hexlet/code",
+  "version": "1.0.0",
+  "description": "Project 4",
+  "homepage": "https://github.com/kat-in/frontend-project-12#readme",
+  "bugs": {
+    "url": "https://github.com/kat-in/frontend-project-12/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kat-in/frontend-project-12.git"
+  },
+  "license": "ISC",
+  "author": "Ekaterina Kryukova",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "build": "cd frontend && npm run build",
+    "start": "npx start-server -s ./frontend/dist",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@hexlet/chat-server": "^2.0.4"
+  }
+}
