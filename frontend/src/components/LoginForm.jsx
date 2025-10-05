@@ -1,6 +1,7 @@
 import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { setCredentials } from '../store/slices/authSlice.js'
 import { useLoginUserMutation } from '../services/usersApi.js';
@@ -10,8 +11,8 @@ const LoginForm = () => {
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const [loginUser, { error }] = useLoginUserMutation()
-
+  const [loginUser] = useLoginUserMutation()
+  const [error, setError] = useState(null)
   const formik = useFormik({
     initialValues: { username: '', password: '' },
     validationSchema: Yup.object({
@@ -19,9 +20,15 @@ const LoginForm = () => {
       password: Yup.string().required('Обязательное поле'),
     }),
     onSubmit: async (values) => {
+      try {
         const response = await loginUser(values).unwrap();
         dispatch(setCredentials(response));
         navigate('/');
+      }
+      catch (err) {
+        setError(err.data.message)
+      }
+
     }
   })
 
@@ -36,7 +43,7 @@ const LoginForm = () => {
         }`} placeholder="Пароль" />
       <div className="invalid-feedback m-0 p-0">{formik.errors.password}</div>
       <button className='w-50 mb-3 btn btn-outline-primary m-2' type="submit">Войти</button>
-      {error ? <div className="text-danger">Ошибка авторизации</div> : null}
+      {error ? <div className="text-danger">{error}</div> : null}
     </form>
 
   )

@@ -18,14 +18,21 @@ import HomePage from './pages/HomePage.jsx'
 const App = () => {
 
   return (
-  <Router>
-  <NavBar />
-      <Routes>
-       <Route path="/" element={<HomePage />} />
-       <Route path="/login" element={<LoginPage />} />
-       <Route path="*" element={<NotFound />} />
-      </Routes>
-  </Router>
+    <Router>
+      <div className='h-100' id='chat'>
+        <div className='d-flex flex-column h-100'></div>
+        <NavBar />
+
+        <div className='container h-100 my-4 overflow-hidden rounded shadow'>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </div>
+     <div className="Toastify"></div>
+      </div>
+    </Router>
   )
 }
 
