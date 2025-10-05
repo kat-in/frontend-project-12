@@ -1,10 +1,17 @@
-import { StrictMode } from 'react'
+import React from 'react'
 import { createRoot } from 'react-dom/client'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'
+import store from './store/store.js'
+// import { createContext } from 'react'
+import { Provider } from 'react-redux'
 import App from './App.jsx'
-import 'bootstrap/dist/css/bootstrap.min.css';
+
+
+const UserContext = React.createContext({})
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
+  <Provider store={store}>
+      <App />
+  </Provider>
 )
