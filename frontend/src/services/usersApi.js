@@ -1,34 +1,25 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-//пока черновик
 export const usersApi = createApi({
   reducerPath: 'users',
-  baseQuery: fetchBaseQuery({ baseUrl: '/api/tasks' }),
-  tagTypes: ['Tasks'],
+  baseQuery: fetchBaseQuery({ baseUrl: '/api/v1' }),
   endpoints: builder => ({
-    getTasks: builder.query({
-      query: () => '',
-      //нужно добавить тег для обновления списка после операций удаления/добавления
-      providesTags: ['Tasks'],
-    }),
-    addTask: builder.mutation({
-      query: task => ({
+    loginUser: builder.mutation({
+      query: user => ({
         method: 'POST', 
-        body: task,
+        url: 'login',
+        body: user,
       }),
-      //отслеживаем тег который надо обновить после добавления
-      invalidatesTags: ['Tasks'],
     }),
-    removeTask: builder.mutation({
-      query: id => ({
-        url: id,
-        method: 'DELETE',
+    addUser: builder.mutation({
+      query: user => ({
+        url: 'signup',
+        method: 'POST',
+        body: user,
       }),
-      //отслеживаем тег после удаления
-      invalidatesTags: ['Tasks'],
     }),
   }),
 })
 
-export const { useGetTasksQuery, useAddTaskMutation, useRemoveTaskMutation } = usersApi
+export const { useAddUserMutation, useLoginUserMutation } = usersApi
 // END
