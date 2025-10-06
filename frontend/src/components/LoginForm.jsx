@@ -28,21 +28,23 @@ const LoginForm = () => {
       catch (err) {
         setError(err.data.message)
       }
-
     }
   })
 
-
   return (
-    <form onSubmit={formik.handleSubmit} className='col-12 align-tems-center'>
-      <h2 className="text-center mb-4">Войти</h2>
-      <input onChange={formik.handleChange} value={formik.values.username} type="text" name="username" className={`form-control  ${formik.touched.username && formik.errors.username ? 'is-invalid' : 'mb-4'
-        }`} placeholder="Ваш ник" />
+    <form onSubmit={formik.handleSubmit} className='col-12 col-md-6 mt-3 mt-md-0'>
+      <h1 className="text-center mb-4">Войти</h1>
+      <div className="form-floating mb-3">
+        <input onChange={formik.handleChange} value={formik.values.username} type="text" name="username" className={`form-control  ${formik.touched.username && formik.errors.username ? 'is-invalid' : 'mb-4'}`} placeholder="Ваш ник" />
+        <label htmlFor="username">Ваш ник</label>
+      </div>
       <div className="invalid-feedback m-0 p-0">{formik.errors.username}</div>
-      <input onChange={formik.handleChange} value={formik.values.password} type="password" name="password" className={`form-control  ${formik.touched.password && formik.errors.password ? 'is-invalid' : 'mb-4'
-        }`} placeholder="Пароль" />
+      <div className="form-floating mb-4">
+        <input onChange={formik.handleChange} value={formik.values.password} type="password" name="password" className={`form-control  ${formik.touched.password && formik.errors.password ? 'is-invalid' : 'mb-4'}`} placeholder="Пароль" />
+        <label className="form-label" htmlFor="password">Пароль</label>
+      </div>
       <div className="invalid-feedback m-0 p-0">{formik.errors.password}</div>
-      <button className='w-50 mb-3 btn btn-outline-primary m-2' type="submit">Войти</button>
+      <button className='w-100 mb-3 btn btn-outline-primary' type="submit">Войти</button>
       {error ? <div className="text-danger">{error}</div> : null}
     </form>
 

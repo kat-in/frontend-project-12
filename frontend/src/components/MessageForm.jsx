@@ -22,7 +22,7 @@ const [addMessage] = useAddMessageMutation()
     })
 
     return (
-        <div className="mt-auto px-5 py-3">
+        <div className="px-5 py-3">
             <form onSubmit={formik.handleSubmit} className="py-1 border rounded-2">
                 <div className="input-group has-validation">
                     <input name="body" aria-label="Новое сообщение" placeholder="Введите сообщение..." className="border-0 p-0 ps-2 form-control" onChange={formik.handleChange} value={formik.values.body} />

@@ -1,5 +1,4 @@
-import React from 'react'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useGetChannelsQuery } from '../services/channelsApi'
 import { useAddMessageMutation, useGetMessagesQuery } from '../services/messagesApi'
@@ -12,6 +11,7 @@ import MessageForm from '../components/MessageForm'
 const HomePage = ({ socket }) => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const messagesEndRef = useRef(null)
     const [activeChannelId, setActiveChannelId] = useState('1')
 
     const token = useSelector(state => state.auth.token)
@@ -20,8 +20,11 @@ const HomePage = ({ socket }) => {
     const { data: messages } = useGetMessagesQuery();
 
     const allChannels = useSelector(state => state.allChannels)
-
     const allMessages = useSelector(state => state.allMessages)
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    }
 
     useEffect(() => {
         socket.on('newMessage', (payload) => {
@@ -31,19 +34,10 @@ const HomePage = ({ socket }) => {
         return () => socket.off('newMessage'); // очистка подписки
     }, [dispatch, socket]);
 
-    // список классов для активного/неактивного канала
-    const channelClassnames = (id) => {
-        return cn('w-100',
-            'rounded-0',
-            'text-start',
-            'btn',
-            { 'btn-secondary': id === activeChannelId },
-        )
-    }
-
-    const handleActiveChannel = (e) => {
-        setActiveChannelId(e.target.id)
-    }
+    
+    useEffect(() => {
+        scrollToBottom()
+    }, [allMessages, activeChannelId])
 
     useEffect(() => {
         if (!token) {
@@ -60,12 +54,40 @@ const HomePage = ({ socket }) => {
 
     }, [token, navigate, dispatch, channels])
 
+    // список классов для активного/неактивного канала
+    const channelClassnames = (id) => {
+        return cn('w-100',
+            'rounded-0',
+            'text-start',
+            'btn',
+            { 'btn-secondary': id === activeChannelId },
+        )
+    }
+
+    const handleActiveChannel = (e) => {
+        setActiveChannelId(e.target.id)
+    }
 
     const activeChannelName = allChannels.filter(ch => ch.id === activeChannelId).map(ch => ch.name)
+
+    const channelsList = allChannels
+        .map(channel => (
+            <li className='nav-item w-100' key={channel.id}>
+                <button onClick={handleActiveChannel} type="button" id={channel.id} className={channelClassnames(channel.id)}>
+                    <span className="me-1">#</span>
+                    {channel.name}
+                </button>
+            </li>))
+
+    const messagesList = allMessages
+        ?.filter(channel => channel.channelId === activeChannelId)
+        .map(message => (<div key={message.id} className="text-break mb-2"><b>{message.username}</b>: {message.body}</div>))
+
     return (
-        <>
+        <div className='container h-100 my-4 overflow-hidden rounded shadow'>
             <div className="row h-100 bg-white flex-md-row">
-                <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
+
+                <div className="col-4 col-md-2 border-end bg-light d-flex flex-column h-100 px-0">
                     <div className='d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4'>
                         <b>Каналы</b>
                         <button type='button' className='p-0 text-primary btn btn-group-vertical'>
@@ -73,32 +95,27 @@ const HomePage = ({ socket }) => {
                             <span className="visually-hidden">+</span>
                         </button>
                     </div>
-                    <ul id='channels-box' className='nav flex-grow-1 flex-column nav-pills nav-fill px-2 mb-3 overflow-auto'>
-                        {allChannels.map(channel => (<li className='nav-item w-100' key={channel.id}>
-                            {/* для активного канала добавляем btn-secondary */}
-                            <button onClick={handleActiveChannel} type="button" id={channel.id} className={channelClassnames(channel.id)}><span className="me-1">#</span>{channel.name}</button>
-                        </li>))}
+                    <ul id='channels-box' className='nav flex-grow-1 flex-column px-2 mb-0 overflow-auto'>
+                        {/* каналы */}
+                        {channelsList}
                     </ul>
                 </div>
                 <div className="col p-0 h-100">
                     <div className='d-flex flex-column h-100'>
                         <div className='bg-light mb-4 p-3 shadow-sm small'>
                             <p className="m-0"><b># {activeChannelName}</b></p>
-                            <span className="text-muted">{allMessages.length} сообщений</span>
+                            <span className="text-muted">{messagesList.length} сообщений</span>
                         </div>
                         {/* сообщения */}
-                        <div id="messages-box" className="chat-messages overflow-auto px-5 ">
-                            {allMessages?.filter(channel => channel.channelId === activeChannelId).map(message => (
-                                <div key={message.id} className="text-break mb-2"><b>{message.username}</b>: {message.body}</div>
-                            ))}
+                        <div id="messages-box" className="chat-messages overflow-auto px-5 d-flex flex-column  flex-grow-1 ">
+                            {messagesList}
+                              <div ref={messagesEndRef} />
                         </div>
-                        <MessageForm socket={socket} channelId={activeChannelId} username={user} />
-
+                        <MessageForm channelId={activeChannelId} username={user} />
                     </div>
-
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 export default HomePage
