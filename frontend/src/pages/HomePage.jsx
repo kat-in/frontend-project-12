@@ -1,24 +1,49 @@
 import React from 'react'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useGetChannelsQuery } from '../services/channelsApi'
 import { useAddMessageMutation, useGetMessagesQuery } from '../services/messagesApi'
 import { useDispatch, useSelector } from 'react-redux'
 import { setChannels } from '../store/slices/channelsSlice'
-import { setMessages } from '../store/slices/messagesSlice'
+import { setMessages, addMessage } from '../store/slices/messagesSlice'
+import cn from 'classnames'
 import MessageForm from '../components/MessageForm'
 
-const HomePage = () => {
+const HomePage = ({ socket }) => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const [activeChannelId, setActiveChannelId] = useState('1')
 
     const token = useSelector(state => state.auth.token)
+    const user = useSelector(state => state.auth.user)
     const { data: channels } = useGetChannelsQuery();
     const { data: messages } = useGetMessagesQuery();
 
     const allChannels = useSelector(state => state.allChannels)
 
     const allMessages = useSelector(state => state.allMessages)
+
+    useEffect(() => {
+        socket.on('newMessage', (payload) => {
+            dispatch(addMessage(payload)); // => { body: "new message", channelId: 7, id: 8, username: "admin" }
+        });
+
+        return () => socket.off('newMessage'); // очистка подписки
+    }, [dispatch, socket]);
+
+    // список классов для активного/неактивного канала
+    const channelClassnames = (id) => {
+        return cn('w-100',
+            'rounded-0',
+            'text-start',
+            'btn',
+            { 'btn-secondary': id === activeChannelId },
+        )
+    }
+
+    const handleActiveChannel = (e) => {
+        setActiveChannelId(e.target.id)
+    }
 
     useEffect(() => {
         if (!token) {
@@ -29,12 +54,14 @@ const HomePage = () => {
         if (channels) {
             dispatch(setChannels(channels))
         }
-         if (messages) {
+        if (messages) {
             dispatch(setMessages(messages))
         }
 
     }, [token, navigate, dispatch, channels])
 
+
+    const activeChannelName = allChannels.filter(ch => ch.id === activeChannelId).map(ch => ch.name)
     return (
         <>
             <div className="row h-100 bg-white flex-md-row">
@@ -49,24 +76,24 @@ const HomePage = () => {
                     <ul id='channels-box' className='nav flex-grow-1 flex-column nav-pills nav-fill px-2 mb-3 overflow-auto'>
                         {allChannels.map(channel => (<li className='nav-item w-100' key={channel.id}>
                             {/* для активного канала добавляем btn-secondary */}
-                            <button type="button" className="w-100 rounded-0 text-start btn"><span className="me-1">#</span>{channel.name}</button>
+                            <button onClick={handleActiveChannel} type="button" id={channel.id} className={channelClassnames(channel.id)}><span className="me-1">#</span>{channel.name}</button>
                         </li>))}
                     </ul>
                 </div>
                 <div className="col p-0 h-100">
                     <div className='d-flex flex-column h-100'>
                         <div className='bg-light mb-4 p-3 shadow-sm small'>
-                            <p className="m-0"><b># general</b></p>
-                            <span className="text-muted">0 сообщений</span>
+                            <p className="m-0"><b># {activeChannelName}</b></p>
+                            <span className="text-muted">{allMessages.length} сообщений</span>
                         </div>
                         {/* сообщения */}
                         <div id="messages-box" className="chat-messages overflow-auto px-5 ">
-                            {allMessages?.map(message => (
+                            {allMessages?.filter(channel => channel.channelId === activeChannelId).map(message => (
                                 <div key={message.id} className="text-break mb-2"><b>{message.username}</b>: {message.body}</div>
                             ))}
                         </div>
-                        <MessageForm/>
-        
+                        <MessageForm socket={socket} channelId={activeChannelId} username={user} />
+
                     </div>
 
                 </div>

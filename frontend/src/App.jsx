@@ -15,7 +15,7 @@ import HomePage from './pages/HomePage.jsx'
 
 
 
-const App = () => {
+const App = ({socket}) => {
 
   return (
     <Router>
@@ -25,7 +25,7 @@ const App = () => {
 
         <div className='container h-100 my-4 overflow-hidden rounded shadow'>
           <Routes>
-            <Route path="/" element={<HomePage />} />
+            <Route path="/" element={<HomePage socket={socket} />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

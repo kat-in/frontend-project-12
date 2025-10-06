@@ -1,15 +1,18 @@
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux'
 import { useFormik } from 'formik';
 import { useAddMessageMutation } from '../services/messagesApi';
 
-const MessageForm = () => {
+
+const MessageForm = ({ channelId, username }) => {
 const [addMessage] = useAddMessageMutation() 
 
     const formik = useFormik({
         initialValues: { body: '' },
         onSubmit: async (values) => {
            try {
-                const response = await addMessage({body: values.body, channelId: '1', username:'admin'}).unwrap();
-                console.log(response)
+                const response = await addMessage({body: values.body, channelId, username }).unwrap();
+                 formik.resetForm();
                  }
                  catch (err) {
                    console.log(err.data.message)
