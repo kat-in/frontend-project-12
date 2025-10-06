@@ -2,7 +2,7 @@ import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { setCredentials } from '../store/slices/authSlice.js'
 import { useLoginUserMutation } from '../services/usersApi.js';
 
@@ -13,6 +13,7 @@ const LoginForm = () => {
   const navigate = useNavigate()
   const [loginUser] = useLoginUserMutation()
   const [error, setError] = useState(null)
+
   const formik = useFormik({
     initialValues: { username: '', password: '' },
     validationSchema: Yup.object({

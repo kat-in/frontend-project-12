@@ -1,5 +1,6 @@
 import SignUpForm from "../components/SignUpForm"
 
+
 const SignUpPage = () => {
     return (
     <div className="container-fluid h-100">
