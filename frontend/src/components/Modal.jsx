@@ -1,30 +1,45 @@
 import { useFormik } from "formik"
 import * as Yup from 'yup';
 import cn from 'classnames'
-import { useAddChannelMutation } from "../services/channelsApi";
-import { useDispatch } from "react-redux";
-import { useContext } from "react";
+import { useAddChannelMutation, useRemoveChannelMutation, useEditChannelMutation } from "../services/channelsApi";
+import { useContext, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { ModalContext } from "../contexts/ModalContext";
 import { ChannelContext } from "../contexts/ChannelContext";
 
 const Modal = () => {
-    const dispatch = useDispatch()
+    
     const [addChannel] = useAddChannelMutation()
+    const [removeChannel] = useRemoveChannelMutation()
+    const [editChannel] = useEditChannelMutation()
+    const channels = useSelector(state => state.allChannels)
+
     const { isModal, setIsModal, modalMode, setModalMode, modalData, setModalData } = useContext(ModalContext)
     const { setActiveChannelId } = useContext(ChannelContext)
+
 
     const modalModeFormik = (modalMode) => {
         switch (modalMode) {
             case 'add': {
                 const formik = useFormik({
+                         enableReinitialize: true,
                     initialValues: { name: '' },
                     validationSchema: Yup.object({
-                        name: Yup.string().required('Обязательное поле').min(3, 'От 3 до 20 символов').max(20, 'От 3 до 20 символов'),
+                        name: Yup.string()
+                            .required('Обязательное поле')
+                            .min(3, 'От 3 до 20 символов')
+                            .max(20, 'От 3 до 20 символов')
+                            .test(
+                                'Уникальность',
+                                'Такое имя уже существует',
+                                (value) => !channels.some(ch => ch.name === value)
+                            ),
                     }),
                     onSubmit: async (values) => {
                         try {
                             const response = await addChannel(values).unwrap();
                             formik.resetForm();
+                            setIsModal(false)
                             setActiveChannelId(response.id)
                         }
                         catch (err) {
@@ -36,30 +51,42 @@ const Modal = () => {
             }
             case 'remove': {
                 const formik = useFormik({
-                    onSubmit: async (values) => {
-                        console.log('удалить', modalData.channelId)
-                        // try {
-                        //     const response = await addChannel(values).unwrap();
-                        //     formik.resetForm();
-                        //     setActiveChannelId(response.id)
-                        // }
-                        // catch (err) {
-                        //     console.log(err)
-                        // }
+                    onSubmit: async () => {
+                        const id = modalData.channelId
+                        try {
+                            const response = await removeChannel(id).unwrap();
+                            formik.resetForm();
+                            setActiveChannelId('1')
+                            setIsModal(false)
+                        }
+                        catch (err) {
+                            console.log(err)
+                        }
                     }
                 })
                 return formik
             }
-              case 'rename': {
+            case 'rename': {
                 const formik = useFormik({
-                    initialValues: { name:'' },
+                    enableReinitialize: true,
+                    initialValues: { name: modalData.channelName },
                     validationSchema: Yup.object({
-                        name: Yup.string().required('Обязательное поле').min(3, 'От 3 до 20 символов').max(20, 'От 3 до 20 символов'),
+                        name: Yup.string()
+                            .required('Обязательное поле')
+                            .min(3, 'От 3 до 20 символов')
+                            .max(20, 'От 3 до 20 символов')
+                            .test(
+                                'Уникальность',
+                                'Такое имя уже существует',
+                                (value) => !channels.some(ch => ch.name === value && ch.id !== modalData.channelId)
+                            ),
                     }),
                     onSubmit: async (values) => {
+                        const id = modalData.channelId
                         try {
-                            const response = await addChannel(values).unwrap();
-                            setActiveChannelId(response.id)
+                            const response = await editChannel({name: values.name, id}).unwrap();
+                            formik.resetForm();
+                            setIsModal(false)
                         }
                         catch (err) {
                             console.log(err)
@@ -69,7 +96,7 @@ const Modal = () => {
                 return formik
             }
             default:
-                throw new Error('Нет такого модального окна')
+                throw new Error('Ошибка модального окна')
         }
     }
 
@@ -87,6 +114,10 @@ const Modal = () => {
     const input = modalMode === 'remove' ? <p className='lead'>Уверены?</p> : <input onChange={formik.handleChange} value={formik.values.name} name="name" id="name" className={inputClassnames} />
     const submitClassList = modalMode === 'remove' ? 'btn btn-danger' : 'btn btn-primary'
 
+
+    useEffect(() => {
+      if (isModal) formik.resetForm();
+    }, [modalMode])
 
     return (
         <>

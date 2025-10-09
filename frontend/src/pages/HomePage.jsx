@@ -1,14 +1,14 @@
-import { useEffect, useState, useRef, useContext } from 'react'
+import { useEffect, useRef, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAddChannelMutation, useGetChannelsQuery } from '../services/channelsApi'
+import { useGetChannelsQuery } from '../services/channelsApi'
 import { useGetMessagesQuery } from '../services/messagesApi'
 import { useDispatch, useSelector } from 'react-redux'
-import { setChannels, addChannel } from '../store/slices/channelsSlice'
+import { setChannels, addChannel, removeChannel } from '../store/slices/channelsSlice'
 import { setMessages, addMessage } from '../store/slices/messagesSlice'
-import MessageForm from '../components/MessageForm'
-import Modal from '../components/Modal'
 import { ModalContext } from '../contexts/ModalContext'
 import { ChannelContext } from '../contexts/ChannelContext'
+import MessageForm from '../components/MessageForm'
+import Modal from '../components/Modal'
 import ChannelButton from '../components/ChanelButton'
 
 
@@ -18,27 +18,33 @@ const HomePage = ({ socket }) => {
     const dispatch = useDispatch()
     const messagesEndRef = useRef(null)
 
-    // const token = useSelector(state => state.auth.token)
-    const token = localStorage.getItem('token')
+    const token = useSelector(state => state.auth.token)
     const user = useSelector(state => state.auth.user)
     const { data: channels } = useGetChannelsQuery();
     const { data: messages } = useGetMessagesQuery();
 
     const allChannels = useSelector(state => state.allChannels)
     const allMessages = useSelector(state => state.allMessages)
-    const { setIsModal, modalMode, setModalMode } = useContext(ModalContext)
+    const { setIsModal, isModal, modalMode, setModalMode, setModalData } = useContext(ModalContext)
     const { activeChannelId } = useContext(ChannelContext)
 
-    const handlerAddChannelModal = () => {
+    const handlerAddChannelModal = (e) => {
         setModalMode('add')
-        console.log(setModalMode)
-        setIsModal(true) 
+
+        setModalData({
+            name: 'Добавить канал',
+            submit: 'Отправить',
+            cancel: 'Отменить',
+            channelName: '',
+            channelId: '',
+        })
+        setIsModal(true)
     }
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
     }
-
+    
     useEffect(() => {
         const handleNewMessage = (payload) => {
             dispatch(addMessage(payload));
@@ -48,12 +54,18 @@ const HomePage = ({ socket }) => {
             dispatch(addChannel(payload));
         }
 
+        const handleRemoveChannel = (payload) => {
+            dispatch(removeChannel(payload));
+        }
+
         socket.on('newMessage', handleNewMessage);
         socket.on('newChannel', handleNewChannel);
+        socket.on('removeChannel', handleRemoveChannel);
 
         return () => {
             socket.off('newMessage', handleNewMessage);
             socket.off('newChannel', handleNewChannel);
+            socket.off('removeChannel', handleRemoveChannel);
         }
     }, [dispatch, socket]);
 
@@ -67,7 +79,7 @@ const HomePage = ({ socket }) => {
             navigate('/login')
             return
         }
-    
+
         if (channels) dispatch(setChannels(channels))
         if (messages) dispatch(setMessages(messages))
 
@@ -77,7 +89,7 @@ const HomePage = ({ socket }) => {
     const activeChannelName = allChannels.filter(ch => ch.id === activeChannelId).map(ch => ch.name)
 
     const channelsList = allChannels
-        .map(channel => (<li className='nav-item w-100' key={channel.id}><ChannelButton channel={channel}/></li>))
+        ?.map(channel => (<li className='nav-item w-100' key={channel.id}><ChannelButton channel={channel} /></li>))
 
     const messagesList = allMessages
         ?.filter(channel => channel.channelId === activeChannelId)

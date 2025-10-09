@@ -6,9 +6,11 @@ const channelsSlice = createSlice({
   reducers: {
     setChannels: (state, { payload }) => payload,
     addChannel: (state, { payload }) => { state.push(payload) }, 
+    removeChannel: (state, { payload }) => state.filter(ch => ch.id !== payload.id),
   },
+
 })
 
-export const { setChannels, addChannel } = channelsSlice.actions
+export const { setChannels, addChannel, removeChannel } = channelsSlice.actions
 
 export default channelsSlice.reducer

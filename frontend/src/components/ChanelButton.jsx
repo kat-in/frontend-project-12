@@ -52,33 +52,34 @@ const ChannelButton = ({ channel }) => {
             name: 'Удалить канал',
             submit: 'Удалить',
             cancel: 'Отменить',
-            channelId: e.target.parentElement.id
-
+            channelName: e.target.name,
+            channelId: e.target.parentElement.id,
         })
         setIsModal(true)
+        setIsOpen(false)
     }
 
-     const handlerRenameChannel = (e) => {
-        console.log(e.target.parentElement)
+    const handlerRenameChannel = (e) => {
         setModalMode('rename')
         setModalData({
             name: 'Переименовать канал',
-            submit: 'Удалить',
-            cancel: 'Отправить',
+            submit: 'Отправить',
+            cancel: 'Отменить',
+            channelName: e.target.name,
+            channelId: e.target.parentElement.id,
         })
         setIsModal(true)
+        setIsOpen(false)
     }
 
     const dropdownClassList = (isOpen) => cn('dropdown-menu', { show: isOpen })
 
-    const dropdownChannelMenu = (
+    const DropdownMenu = ({ isOpen, channel }) => (
         <div x-placement="bottom-start" id={channel.id} className={dropdownClassList(isOpen)} style={{ position: 'absolute', inset: '0px auto auto 0px', transform: 'translate3d(51px, 40px, 0px)' }}>
             <a onClick={handlerRemoveChannel} className="dropdown-item" role="button" tabIndex="0" href="#">Удалить</a>
-            <a onClick={handlerRenameChannel} className="dropdown-item" role="button" tabIndex="0" href="#">Переименовать</a>
+            <a onClick={handlerRenameChannel} name={channel.name} className="dropdown-item" role="button" tabIndex="0" href="#">Переименовать</a>
         </div>
     )
-
-
 
 
     const removableChannel = (channel) => (
@@ -88,7 +89,7 @@ const ChannelButton = ({ channel }) => {
             <button onClick={toggleDropdown} type="button" id={channel.id} aria-expanded="false" className={buttonRemovableClassList(channel.id, channel.removable)}>
                 <span className="visually-hidden">Управление каналом</span>
             </button>
-            {dropdownChannelMenu}
+            <DropdownMenu channel={channel} isOpen={isOpen} />
         </div>
     )
 
