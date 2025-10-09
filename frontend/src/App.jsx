@@ -9,28 +9,29 @@ import NotFound from './pages/NotFound.jsx'
 import NavBar from './components/NavBar.jsx'
 import HomePage from './pages/HomePage.jsx'
 import SignUpPage from './pages/SignUpPage.jsx'
+import { ModalProvider } from './contexts/ModalContext.jsx'
+import { ChannelProvider } from './contexts/ChannelContext.jsx'
 
-
-
-
-const App = ({socket}) => {
+const App = ({ socket }) => {
 
   return (
     <Router>
-        <div className='d-flex flex-column h-100'>
+      <div className='d-flex flex-column h-100'>
         <NavBar />
-       
-          <Routes>
-            <Route path="/" element={<HomePage socket={socket} />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/signup" element={<SignUpPage />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-          
-        </div>
-      
-     <div className="Toastify"></div>
-  
+        <ChannelProvider>
+          <ModalProvider>
+            <Routes>
+              <Route path="/" element={<HomePage socket={socket} />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/signup" element={<SignUpPage />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </ModalProvider>
+        </ChannelProvider>
+      </div>
+
+      {/* <div className="Toastify"></div> */}
+
     </Router>
   )
 }
