@@ -18,8 +18,8 @@ const HomePage = ({ socket }) => {
     const dispatch = useDispatch()
     const messagesEndRef = useRef(null)
 
-    const token = useSelector(state => state.auth.token)
-    // const token = localStorage.getItem('userId')
+    // const token = useSelector(state => state.auth.token)
+    const token = localStorage.getItem('token')
     const user = useSelector(state => state.auth.user)
     const { data: channels } = useGetChannelsQuery();
     const { data: messages } = useGetMessagesQuery();
@@ -27,7 +27,7 @@ const HomePage = ({ socket }) => {
     const allChannels = useSelector(state => state.allChannels)
     const allMessages = useSelector(state => state.allMessages)
     const { setIsModal, modalMode, setModalMode } = useContext(ModalContext)
-    const { activeChannelId, setActiveChannelId } = useContext(ChannelContext)
+    const { activeChannelId } = useContext(ChannelContext)
 
     const handlerAddChannelModal = () => {
         setModalMode('add')
@@ -67,7 +67,7 @@ const HomePage = ({ socket }) => {
             navigate('/login')
             return
         }
-
+    
         if (channels) dispatch(setChannels(channels))
         if (messages) dispatch(setMessages(messages))
 

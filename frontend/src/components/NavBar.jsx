@@ -8,7 +8,8 @@ const NavBar = () => {
     const token = useSelector(state => state.auth.token)
     
     const handleLogout = () => {
-        // localStorage.removeItem('userId')
+        localStorage.removeItem('user')
+        localStorage.removeItem('token')
         dispatch(removeCredentials())
     }
 

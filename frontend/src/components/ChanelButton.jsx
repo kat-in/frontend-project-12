@@ -39,7 +39,7 @@ const ChannelButton = ({ channel }) => {
 
     const handleActiveChannel = (e) => {
         setActiveChannelId(e.target.id)
-        setIsOpenId(false)
+        setIsOpen(false)
     }
 
     const toggleDropdown = (e) => {
@@ -58,7 +58,8 @@ const ChannelButton = ({ channel }) => {
         setIsModal(true)
     }
 
-     const handlerRenameChannel = () => {
+     const handlerRenameChannel = (e) => {
+        console.log(e.target.parentElement)
         setModalMode('rename')
         setModalData({
             name: 'Переименовать канал',
@@ -71,7 +72,7 @@ const ChannelButton = ({ channel }) => {
     const dropdownClassList = (isOpen) => cn('dropdown-menu', { show: isOpen })
 
     const dropdownChannelMenu = (
-        <div x-placement="bottom-start" id={channel.id} className={dropdownClassList(isOpen)} data-popper-reference-hidden="false" data-popper-escaped="false" data-popper-placement="bottom-start" style={{ position: 'absolute', inset: '0px auto auto 0px', transform: 'translate3d(51px, 40px, 0px)' }}>
+        <div x-placement="bottom-start" id={channel.id} className={dropdownClassList(isOpen)} style={{ position: 'absolute', inset: '0px auto auto 0px', transform: 'translate3d(51px, 40px, 0px)' }}>
             <a onClick={handlerRemoveChannel} className="dropdown-item" role="button" tabIndex="0" href="#">Удалить</a>
             <a onClick={handlerRenameChannel} className="dropdown-item" role="button" tabIndex="0" href="#">Переименовать</a>
         </div>

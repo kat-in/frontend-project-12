@@ -24,7 +24,8 @@ const LoginForm = () => {
       try {
         const response = await loginUser(values).unwrap();
         dispatch(setCredentials(response));
-        localStorage.setItem('userId', response.token)
+        localStorage.setItem('token', response.token)
+        localStorage.setItem('user', response.username)
         navigate('/');
       }
       catch (err) {
