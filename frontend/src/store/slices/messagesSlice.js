@@ -8,9 +8,7 @@ const messagesSlice = createSlice({
     setMessages: (state, { payload }) => payload,
     addMessage: (state, { payload }) => {
       const existingIds = new Set(state.map(m => m.id));
-      payload.forEach(msg => {
-        if (!existingIds.has(msg.id)) state.push(msg);
-      });
+        if (!existingIds.has(payload.id)) state.push(payload); 
     }
   },
   extraReducers: (builder) => {
