@@ -4,7 +4,7 @@ export const messagesApi = createApi({
     reducerPath: 'messages',
     baseQuery: fetchBaseQuery({
         baseUrl: '/api/v1/messages',
-        tagTypes: ['Message'],
+        tagTypes: ['Messages'],
         prepareHeaders: (headers, { getState }) => {
             const token = getState().auth.token; // берем токен из authSlice
             if (token) {
@@ -24,7 +24,7 @@ export const messagesApi = createApi({
                 method: 'POST',
                 body: message,
             }),
-            invalidatesTags: ['Message'],
+            invalidatesTags: ['Messages'],
         }),
         editMessage: builder.mutation({
             query: ({id, body}) => ({
@@ -32,7 +32,7 @@ export const messagesApi = createApi({
                 body,
                 url: id,
             }),
-            invalidatesTags: ['Message'],
+            invalidatesTags: ['Messages'],
         }),
         removeMessage: builder.mutation({
             query: id => ({
@@ -40,7 +40,7 @@ export const messagesApi = createApi({
                 url: id,
             }),
         }),
-        invalidatesTags: ['Message'],
+        invalidatesTags: ['Messages'],
     }),
 })
 
