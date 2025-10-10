@@ -6,9 +6,8 @@ import { useContext, useState } from 'react'
 
 const ChannelButton = ({ channel }) => {
 
-    const { activeChannelId, setActiveChannelId } = useContext(ChannelContext)
+    const { activeChannelId, setActiveChannelId, activeDropdownId, setActiveDropdownId } = useContext(ChannelContext)
     const { setModalMode, ModalMode, setIsModal, isModal, modalData, setModalData } = useContext(ModalContext)
-    const [isOpen, setIsOpen] = useState(false)
 
     const channelClassList = (id, removable) => {
         return cn('w-100', 'rounded-0', 'text-start', 'btn',
@@ -39,12 +38,22 @@ const ChannelButton = ({ channel }) => {
 
     const handleActiveChannel = (e) => {
         setActiveChannelId(e.target.id)
-        setIsOpen(false)
+        setActiveDropdownId(null)
     }
 
-    const toggleDropdown = (e) => {
-        setIsOpen(!isOpen)
+
+    const handleDropdown = (e) => {
+        const id = e.target.id
+        console.log(activeDropdownId, id)
+        if (id === activeDropdownId) {
+            setActiveDropdownId(null)
+        }
+        else {
+            setActiveDropdownId(id)
+        }
     }
+
+
 
     const handlerRemoveChannel = (e) => {
         setModalMode('remove')
@@ -72,10 +81,12 @@ const ChannelButton = ({ channel }) => {
         setIsOpen(false)
     }
 
-    const dropdownClassList = (isOpen) => cn('dropdown-menu', { show: isOpen })
+    const isOpen = (id) => id === activeDropdownId
+    const dropdownClassList = (isOpen, id) => cn('dropdown-menu', { show: isOpen })
+
 
     const DropdownMenu = ({ isOpen, channel }) => (
-        <div x-placement="bottom-start" id={channel.id} className={dropdownClassList(isOpen)} style={{ position: 'absolute', inset: '0px auto auto 0px', transform: 'translate3d(51px, 40px, 0px)' }}>
+        <div x-placement="bottom-start" id={channel.id} className={dropdownClassList(isOpen(channel.id))} style={{ position: 'absolute', inset: '0px auto auto 0px', transform: 'translate3d(51px, 40px, 0px)' }}>
             <a onClick={handlerRemoveChannel} className="dropdown-item" role="button" tabIndex="0" href="#">Удалить</a>
             <a onClick={handlerRenameChannel} name={channel.name} className="dropdown-item" role="button" tabIndex="0" href="#">Переименовать</a>
         </div>
@@ -86,7 +97,7 @@ const ChannelButton = ({ channel }) => {
         <div role="group" className="d-flex dropdown btn-group">
             <button onClick={handleActiveChannel} type="button" id={channel.id} className={channelRemovableClassList(channel.id)}>
                 <span className="me-1">#</span>{channel.name}</button>
-            <button onClick={toggleDropdown} type="button" id={channel.id} aria-expanded="false" className={buttonRemovableClassList(channel.id, channel.removable)}>
+            <button onClick={handleDropdown} type="button" id={channel.id} aria-expanded="false" className={buttonRemovableClassList(channel.id, channel.removable)}>
                 <span className="visually-hidden">Управление каналом</span>
             </button>
             <DropdownMenu channel={channel} isOpen={isOpen} />

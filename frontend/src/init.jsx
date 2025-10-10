@@ -10,15 +10,15 @@ import { io } from 'socket.io-client'
 const init = () => {
 
 
-//    const socket = io('http://localhost:5002', {
-//   path: '/socket.io',       // путь для проксирования
-//   transports: ['websocket', 'polling'], // обязательно для прокси
-// });
-
- const socket = io('wws://chat-rfzu.onrender.com:443', {
+   const socket = io('http://localhost:5002', {
   path: '/socket.io',       // путь для проксирования
   transports: ['websocket', 'polling'], // обязательно для прокси
 });
+
+//  const socket = io('wws://chat-rfzu.onrender.com:443', {
+//   path: '/socket.io',       // путь для проксирования
+//   transports: ['websocket', 'polling'], // обязательно для прокси
+// });
 
     return createRoot(document.getElementById('root')).render(
         <Provider store={store}>

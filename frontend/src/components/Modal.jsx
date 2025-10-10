@@ -2,27 +2,36 @@ import { useFormik } from "formik"
 import * as Yup from 'yup';
 import cn from 'classnames'
 import { useAddChannelMutation, useRemoveChannelMutation, useEditChannelMutation } from "../services/channelsApi";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { ModalContext } from "../contexts/ModalContext";
 import { ChannelContext } from "../contexts/ChannelContext";
 
 const Modal = () => {
-    
+
     const [addChannel] = useAddChannelMutation()
     const [removeChannel] = useRemoveChannelMutation()
     const [editChannel] = useEditChannelMutation()
     const channels = useSelector(state => state.allChannels)
 
-    const { isModal, setIsModal, modalMode, setModalMode, modalData, setModalData } = useContext(ModalContext)
+    const { isModal, setIsModal, modalMode, setModalMode, modalData, setModalData, isButtonDisabled, setIsButtonDisabled } = useContext(ModalContext)
     const { setActiveChannelId } = useContext(ChannelContext)
+    const inputEl = useRef(null)
 
+    useEffect(() => {
+        if (isModal && inputEl.current) {
+            inputEl.current.focus()
+        }
+        if (modalMode === 'rename' && inputEl.current) {
+            inputEl.current.select()
+        }
+    }, [isModal, modalMode ])
 
     const modalModeFormik = (modalMode) => {
         switch (modalMode) {
             case 'add': {
                 const formik = useFormik({
-                         enableReinitialize: true,
+                    enableReinitialize: true,
                     initialValues: { name: '' },
                     validationSchema: Yup.object({
                         name: Yup.string()
@@ -54,8 +63,8 @@ const Modal = () => {
                     onSubmit: async () => {
                         const id = modalData.channelId
                         try {
-                            const response = await removeChannel(id).unwrap();
-                            formik.resetForm();
+                            const response = await removeChannel(id).unwrap()
+                            formik.resetForm()
                             setActiveChannelId('1')
                             setIsModal(false)
                         }
@@ -84,7 +93,7 @@ const Modal = () => {
                     onSubmit: async (values) => {
                         const id = modalData.channelId
                         try {
-                            const response = await editChannel({name: values.name, id}).unwrap();
+                            const response = await editChannel({ name: values.name, id }).unwrap();
                             formik.resetForm();
                             setIsModal(false)
                         }
@@ -96,7 +105,7 @@ const Modal = () => {
                 return formik
             }
             default:
-                throw new Error('Ошибка модального окна')
+                return null
         }
     }
 
@@ -109,14 +118,14 @@ const Modal = () => {
 
 
     const modalIsShown = cn('fade', 'modal', { 'show': isModal, 'd-block': isModal })
-    const modalBackdrop = isModal ? <div className='fade, modal-backdrop show'></div> : null
+    const modalBackdrop = isModal ? <div className='fade modal-backdrop show'></div> : null
     const inputClassnames = cn('mb-2', 'form-control', { 'is-invalid': formik.errors.name })
-    const input = modalMode === 'remove' ? <p className='lead'>Уверены?</p> : <input onChange={formik.handleChange} value={formik.values.name} name="name" id="name" className={inputClassnames} />
+    const input = modalMode === 'remove' ? <p className='lead'>Уверены?</p> : <input ref={inputEl} onChange={formik.handleChange} value={formik.values.name} name="name" id="name" className={inputClassnames} />
     const submitClassList = modalMode === 'remove' ? 'btn btn-danger' : 'btn btn-primary'
 
 
     useEffect(() => {
-      if (isModal) formik.resetForm();
+        if (isModal) formik.resetForm();
     }, [modalMode])
 
     return (
@@ -136,7 +145,7 @@ const Modal = () => {
                                     <label className="visually-hidden" htmlFor="name">Имя канала</label>
                                     <div className="invalid-feedback">{formik.errors.name}</div>
                                     <div className="d-flex justify-content-end">
-                                        <button onClick={handleCloseModal} type="button" className="me-2 btn btn-secondary">{modalData.cancel}</button>
+                                        <button onClick={handleCloseModal} type="button" className='me-2 btn btn-secondary'>{modalData.cancel}</button>
                                         <button type="submit" className={submitClassList}>{modalData.submit}</button>
                                     </div>
                                 </div>

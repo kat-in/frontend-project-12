@@ -17,8 +17,10 @@ const HomePage = ({ socket }) => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const messagesEndRef = useRef(null)
+    const lastChannelRef = useRef(null)
 
-    const token = useSelector(state => state.auth.token)
+    const token = localStorage.getItem('token')
+    // const token = useSelector(state => state.auth.token)
     const user = useSelector(state => state.auth.user)
     const { data: channels } = useGetChannelsQuery();
     const { data: messages } = useGetMessagesQuery();
@@ -26,7 +28,7 @@ const HomePage = ({ socket }) => {
     const allChannels = useSelector(state => state.allChannels)
     const allMessages = useSelector(state => state.allMessages)
     const { setIsModal, isModal, modalMode, setModalMode, setModalData } = useContext(ModalContext)
-    const { activeChannelId } = useContext(ChannelContext)
+    const { activeChannelId, setActiveDropdownId } = useContext(ChannelContext)
 
     const handlerAddChannelModal = (e) => {
         setModalMode('add')
@@ -38,13 +40,17 @@ const HomePage = ({ socket }) => {
             channelName: '',
             channelId: '',
         })
+        setActiveDropdownId(null)
         setIsModal(true)
     }
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+        lastChannelRef.current?.scrollIntoView({ behavior: 'smooth' })
     }
-    
+
+
+
     useEffect(() => {
         const handleNewMessage = (payload) => {
             dispatch(addMessage(payload));
@@ -72,7 +78,7 @@ const HomePage = ({ socket }) => {
 
     useEffect(() => {
         scrollToBottom()
-    }, [allMessages, activeChannelId])
+    }, [allMessages, activeChannelId, allChannels])
 
     useEffect(() => {
         if (!token) {
@@ -89,7 +95,7 @@ const HomePage = ({ socket }) => {
     const activeChannelName = allChannels.filter(ch => ch.id === activeChannelId).map(ch => ch.name)
 
     const channelsList = allChannels
-        ?.map(channel => (<li className='nav-item w-100' key={channel.id}><ChannelButton channel={channel} /></li>))
+        ?.map(channel => (<li className='nav-item w-100' ref={channel.id === activeChannelId ? lastChannelRef : null} key={channel.id}><ChannelButton channel={channel} /></li>))
 
     const messagesList = allMessages
         ?.filter(channel => channel.channelId === activeChannelId)
@@ -100,7 +106,7 @@ const HomePage = ({ socket }) => {
             <div className='container h-100 my-4 overflow-hidden rounded shadow'>
                 <div className="row h-100 bg-white flex-md-row">
 
-                    <div className="col-4 col-md-2 border-end bg-light d-flex flex-column h-100 px-0">
+                    <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex" >
                         <div className='d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4'>
                             <b>Каналы</b>
                             <button onClick={handlerAddChannelModal} type='button' className='p-0 text-primary btn btn-group-vertical'>
@@ -108,7 +114,7 @@ const HomePage = ({ socket }) => {
                                 <span className="visually-hidden">+</span>
                             </button>
                         </div>
-                        <ul id='channels-box' className='nav flex-grow-1 flex-column px-2 mb-0 overflow-auto'>
+                        <ul id='channels-box' className='nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block' >
                             {/* каналы */}
                             {channelsList}
                         </ul>
