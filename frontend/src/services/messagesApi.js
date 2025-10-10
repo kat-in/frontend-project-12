@@ -39,8 +39,8 @@ export const messagesApi = createApi({
                 method: 'DELETE',
                 url: id,
             }),
+              invalidatesTags: ['Messages'],
         }),
-        invalidatesTags: ['Messages'],
     }),
 })
 
