@@ -6,14 +6,19 @@ const messagesSlice = createSlice({
   initialState: [],
   reducers: {
     setMessages: (state, { payload }) => payload,
-    addMessage: (state, { payload }) => { state.push(payload) }, 
+    addMessage: (state, { payload }) => {
+      const existingIds = new Set(state.map(m => m.id));
+      payload.forEach(msg => {
+        if (!existingIds.has(msg.id)) state.push(msg);
+      });
+    }
   },
   extraReducers: (builder) => {
-    builder.addCase(removeChannel, (state, {payload})=> {
+    builder.addCase(removeChannel, (state, { payload }) => {
       const channdelId = payload.channdelId
-      return state.filter( message => message.channdelId !== channdelId)
+      return state.filter(message => message.channdelId !== channdelId)
     })
-  
+
   }
 })
 
