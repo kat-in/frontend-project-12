@@ -58,12 +58,12 @@ const LoginForm = () => {
       <Form onSubmit={formik.handleSubmit}>
         <Row>
           <Col md="6">
-            <Image src="/images/chat.png" className="img-fluid overflow-hidden" roundedCircle alt="Войти" />
+            <Image src="/images/chat.png" className="img-fluid overflow-hidden" roundedCircle alt={t('auth.logIn')} />
           </Col>
           <Col md="6">
             <Form.Group
               as={Col}
-              controlId="validationFormik101"
+              controlId="username"
               className="position-relative mb-3"
             >
               <h1 className="text-center mb-4">{t('auth.logIn')}</h1>
@@ -73,7 +73,7 @@ const LoginForm = () => {
                 style={{ height: '60px' }}
                 type="text"
                 name="username"
-                placeholder='Ваш Ник'
+                placeholder={t('auth.yourNikname')}
                 value={formik.values.username}
                 onChange={formik.handleChange}
                 isInvalid={!!formik.errors.username}
@@ -82,7 +82,7 @@ const LoginForm = () => {
             </Form.Group>
             <Form.Group
               as={Col}
-              controlId="validationFormik102"
+              controlId="password"
               className="position-relative"
             >
               <Form.Label visuallyHidden>{t('auth.password')}</Form.Label>
@@ -91,7 +91,7 @@ const LoginForm = () => {
                 type="password"
                 name="password"
                 value={formik.values.password}
-                placeholder='Пароль'
+                placeholder={t('auth.password')}
                 onChange={formik.handleChange}
                 isInvalid={!!formik.errors.password || !!error}
               />
