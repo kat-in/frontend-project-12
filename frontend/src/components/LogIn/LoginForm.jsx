@@ -7,12 +7,21 @@ import { useDispatch } from 'react-redux'
 import { setCredentials } from '../../store/slices/authSlice.js'
 import { useLoginUserMutation } from '../../api/usersApi.js';
 import { useTranslation } from 'react-i18next';
+import { useRef, useEffect } from 'react';
+
+import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
+import Form from 'react-bootstrap/Form';
+import Container from 'react-bootstrap/Container';
+import Image from 'react-bootstrap/Image';
+
 
 
 const LoginForm = () => {
 
   const { t } = useTranslation()
-
+  const inputRef = useRef(null)
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [loginUser] = useLoginUserMutation()
@@ -21,8 +30,8 @@ const LoginForm = () => {
   const formik = useFormik({
     initialValues: { username: '', password: '' },
     validationSchema: Yup.object({
-      username: Yup.string().required('Обязательное поле'),
-      password: Yup.string().required('Обязательное поле'),
+      username: Yup.string().required(t('validation.required')),
+      password: Yup.string().required(t('validation.required')),
     }),
     onSubmit: async (values) => {
       try {
@@ -39,22 +48,63 @@ const LoginForm = () => {
     }
   })
 
+  useEffect(() => {
+    if (inputRef) inputRef.current.focus()
+  }, [])
+
   return (
-    <form onSubmit={formik.handleSubmit} className='col-12 col-md-6 mt-3 mt-md-0'>
-      <h1 className="text-center mb-4">{t('auth.logIn')}</h1>
-      <div className="form-floating mb-3">
-        <input onChange={formik.handleChange} value={formik.values.username} type="text" name="username" className={`form-control  ${formik.touched.username && formik.errors.username ? 'is-invalid' : 'mb-4'}`} placeholder="Ваш ник" />
-        <label htmlFor="username">{t('auth.yourNikname')}</label>
-      </div>
-      <div className="invalid-feedback m-0 p-0">{formik.errors.username}</div>
-      <div className="form-floating mb-4">
-        <input onChange={formik.handleChange} value={formik.values.password} type="password" name="password" className={`form-control  ${formik.touched.password && formik.errors.password ? 'is-invalid' : 'mb-4'}`} placeholder="Пароль" />
-        <label className="form-label" htmlFor="password">{t('auth.password')}</label>
-      </div>
-      <div className="invalid-feedback m-0 p-0">{formik.errors.password}</div>
-      <button className='w-100 mb-3 btn btn-outline-primary' type="submit">{t('auth.logIn')}</button>
-      {error ? <div className="text-danger">{t(`errors.${error}`)}</div> : null}
-    </form>
+
+    <Container>
+      <Form onSubmit={formik.handleSubmit}>
+        <Row>
+          <Col md="6">
+            <Image src="/images/chat.png" className="img-fluid overflow-hidden" roundedCircle alt="Войти" />
+          </Col>
+          <Col md="6">
+            <Form.Group
+              as={Col}
+              controlId="validationFormik101"
+              className="position-relative mb-3"
+            >
+              <h1 className="text-center mb-4">{t('auth.logIn')}</h1>
+              <Form.Label visuallyHidden>{t('auth.yourNikname')}</Form.Label>
+              <Form.Control
+                ref={inputRef}
+                style={{ height: '60px' }}
+                type="text"
+                name="username"
+                placeholder='Ваш Ник'
+                value={formik.values.username}
+                onChange={formik.handleChange}
+                isInvalid={!!formik.errors.username}
+              />
+              <Form.Control.Feedback type="invalid" tooltip>{formik.errors.username}</Form.Control.Feedback>
+            </Form.Group>
+            <Form.Group
+              as={Col}
+              controlId="validationFormik102"
+              className="position-relative"
+            >
+              <Form.Label visuallyHidden>{t('auth.password')}</Form.Label>
+              <Form.Control
+                style={{ height: '60px' }}
+                type="password"
+                name="password"
+                value={formik.values.password}
+                placeholder='Пароль'
+                onChange={formik.handleChange}
+                isInvalid={!!formik.errors.password || !!error}
+              />
+              <Form.Control.Feedback type="invalid" tooltip>{formik.errors.password || t(`errors.${error}`)}</Form.Control.Feedback>
+            </Form.Group>
+            <Form.Group as={Col}>
+              <Button variant="outline-primary" className="mt-3 mb-3 w-100" type="submit">{t('auth.logIn')}</Button>
+            </Form.Group>
+          </Col>
+        </Row>
+
+      </Form>
+    </Container>
 
   )
 }

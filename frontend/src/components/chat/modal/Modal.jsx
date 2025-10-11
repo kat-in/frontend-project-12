@@ -3,13 +3,13 @@ import Modal from 'react-bootstrap/Modal';
 import cn from 'classnames'
 import { useContext, useEffect, useRef } from "react";
 import { ModalContext } from '../../../contexts/ModalContext';
-import { ChannelContext } from '../../../contexts/ChannelContext';
+import { useTranslation } from "react-i18next";
 
 export default ({formik}) => {
 
-    const { isModal, setIsModal, modalMode, setModalMode, modalData, setModalData, isButtonDisabled, setIsButtonDisabled } = useContext(ModalContext)
-    const { setActiveChannelId } = useContext(ChannelContext)
+    const { isModal, setIsModal, modalMode, modalData} = useContext(ModalContext)
     const inputEl = useRef(null)
+     const {t} = useTranslation()
 
     const handleCloseModal = () => {
         formik.resetForm()
@@ -17,7 +17,7 @@ export default ({formik}) => {
     }
 
     const inputClassnames = cn('mb-2', 'form-control', { 'is-invalid': formik.errors.name })
-    const input = modalMode === 'remove' ? <p className='lead'>Уверены?</p> : <input ref={inputEl} onChange={formik.handleChange} value={formik.values.name} name="name" id="name" className={inputClassnames} />
+    const input = modalMode === 'remove' ? <p className='lead'>{t('chat.areYouShure:')}</p> : <input ref={inputEl} onChange={formik.handleChange} value={formik.values.name} name="name" id="name" className={inputClassnames} />
     const buttonColor = modalMode === 'remove' ? 'danger' : 'primary'
 
 
@@ -40,7 +40,7 @@ export default ({formik}) => {
             <form onSubmit={formik.handleSubmit}>
                 <Modal.Body>
                     {input}
-                    <label className="visually-hidden" htmlFor="name">Имя канала</label>
+                    <label className="visually-hidden" htmlFor="name">{t('chat.channelName')}</label>
                     <div className="invalid-feedback">{formik.errors.name}</div>
                     <Modal.Footer style={{ borderTop: 'none' }}>
                         <Button onClick={handleCloseModal} variant="secondary">{modalData.cancel}</Button>

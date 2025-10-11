@@ -27,7 +27,8 @@ export default {
             cancel: 'Отменить',
             submit: 'Отправить',
             areYouShure: 'Уверены?',
-            controlChannel: 'Управление каналом'
+            controlChannel: 'Управление каналом',
+            channelName: 'Имя канала',
         },
         modal: {
             isUnique: 'Такое имя уже существует'

@@ -8,7 +8,7 @@ import Modal from "./Modal";
 
 const Remove = () => {
     const [removeChannel] = useRemoveChannelMutation()
-
+ 
     const { setIsModal, modalData } = useContext(ModalContext)
     const { setActiveChannelId } = useContext(ChannelContext)
 

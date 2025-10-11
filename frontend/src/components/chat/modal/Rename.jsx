@@ -5,13 +5,14 @@ import { useEditChannelMutation } from "../../../api/channelsApi";
 import { useContext } from "react";
 import { useSelector } from "react-redux";
 import { ModalContext } from "../../../contexts/ModalContext";
+import { useTranslation } from "react-i18next";
 import Modal from "./Modal";
 
 const Rename = () => {
     const [editChannel] = useEditChannelMutation()
     const channels = useSelector(state => state.allChannels)
-    const {  setIsModal,  modalData } = useContext(ModalContext)
-
+    const { setIsModal, modalData } = useContext(ModalContext)
+    const { t } = useTranslation()
 
     const formik = useFormik({
         enableReinitialize: true,
