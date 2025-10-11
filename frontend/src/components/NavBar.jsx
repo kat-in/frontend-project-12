@@ -1,9 +1,12 @@
+import React from "react"
 import { useSelector } from "react-redux"
 import { removeCredentials } from "../store/slices/authSlice"
 import { useDispatch } from "react-redux"
+import { useTranslation } from 'react-i18next';
 
 
 const NavBar = () => {
+    const {t} = useTranslation()
     const dispatch = useDispatch()
     const token = useSelector(state => state.auth.token)
     
@@ -13,13 +16,13 @@ const NavBar = () => {
         dispatch(removeCredentials())
     }
 
-    const logoutButton = token ? <button onClick={handleLogout} type="button" className="btn btn-primary">Выйти</button> : null
+    const logoutButton = token ? <button onClick={handleLogout} type="button" className="btn btn-primary">{t('auth.logOut')}</button> : null
 
     return (
         <>
             <nav className='shadow-sm navbar navbar-expand-lg navbar-light bg-white'>
                 <div className='container'>
-                    <a className='navbar-brand' href='/'>Чатик</a>
+                    <a className='navbar-brand' href='/'>Hexlet Chat</a>
                     {logoutButton}
                 </div>
             </nav>

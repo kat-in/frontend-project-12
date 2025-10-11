@@ -1,3 +1,3 @@
 import init from './init'
 
-init()
+await init()

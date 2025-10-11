@@ -1,5 +1,6 @@
+import React from 'react';
 import { useFormik } from 'formik';
-import { useAddMessageMutation } from '../services/messagesApi';
+import { useAddMessageMutation } from '../api/messagesApi';
 
 
 const MessageForm = ({ channelId, username }) => {

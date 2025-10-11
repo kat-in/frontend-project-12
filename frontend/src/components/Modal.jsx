@@ -1,7 +1,8 @@
+import React from "react";
 import { useFormik } from "formik"
 import * as Yup from 'yup';
 import cn from 'classnames'
-import { useAddChannelMutation, useRemoveChannelMutation, useEditChannelMutation } from "../services/channelsApi";
+import { useAddChannelMutation, useRemoveChannelMutation, useEditChannelMutation } from "../api/channelsApi";
 import { useContext, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { ModalContext } from "../contexts/ModalContext";

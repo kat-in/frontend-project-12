@@ -1,7 +1,8 @@
+import React from 'react'
 import { useEffect, useRef, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useGetChannelsQuery } from '../services/channelsApi'
-import { useGetMessagesQuery } from '../services/messagesApi'
+import { useGetChannelsQuery } from '../api/channelsApi'
+import { useGetMessagesQuery } from '../api/messagesApi'
 import { useDispatch, useSelector } from 'react-redux'
 import { setChannels, addChannel, removeChannel } from '../store/slices/channelsSlice'
 import { setMessages, addMessage } from '../store/slices/messagesSlice'
@@ -9,11 +10,11 @@ import { ModalContext } from '../contexts/ModalContext'
 import { ChannelContext } from '../contexts/ChannelContext'
 import MessageForm from '../components/MessageForm'
 import Modal from '../components/Modal'
-import ChannelButton from '../components/ChanelButton'
+import ChannelButton from '../components/chat/channels/ChanelButton'
 
 
 
-const HomePage = ({ socket }) => {
+const Chat = ({ socket }) => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const messagesEndRef = useRef(null)
@@ -139,4 +140,4 @@ const HomePage = ({ socket }) => {
         </>
     )
 }
-export default HomePage
+export default Chat
