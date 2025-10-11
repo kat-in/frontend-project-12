@@ -23,11 +23,14 @@ export default {
             message_one: '{{count}} сообщение',
             message_few: '{{count}} сообщения',
             message_many: '{{count}} сообщений',
-            inputMessage: 'Введите сообщение',
+            inputMessage: 'Введите сообщение...',
             cancel: 'Отменить',
             submit: 'Отправить',
             areYouShure: 'Уверены?',
             controlChannel: 'Управление каналом'
+        },
+        modal: {
+            
         }
 
 
