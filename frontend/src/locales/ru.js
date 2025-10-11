@@ -30,25 +30,20 @@ export default {
             controlChannel: 'Управление каналом'
         },
         modal: {
-            
+            isUnique: 'Такое имя уже существует'
+
+        },
+        validation: {
+            default: 'Некорректное значение',
+            min: "Минимум {{count}} символа",
+            max: "Максимум {{count}} символов",
+            required: 'Обязательное поле',
+        },
+        errors: {
+            Unauthorized: 'Неверные имя пользователя или пароль',
+            notFound: "Не найдено",
+            serverError: "Ошибка сервера",
+            unknown: "Произошла неизвестная ошибка",
         }
-
-
-
-        //     validation: {
-        //       yup: {
-        //         mixed: {
-        //           default: 'Некорректное значение',
-        //           notOneOf: 'RSS уже существует',
-        //           required: 'Не должно быть пустым',
-        //         },
-        //         string: {
-        //           url: 'Ссылка должна быть валидным URL',
-        //         },
-        //       },
-        //       networkError: 'Ошибка сети',
-        //       invalidRss: 'Ресурс не содержит валидный RSS',
-        //       success: 'RSS успешно загружен',
-        //     },
     },
 }

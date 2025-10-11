@@ -34,6 +34,7 @@ const LoginForm = () => {
       }
       catch (err) {
         setError(err.data.message)
+        console.log(error)
       }
     }
   })
@@ -52,7 +53,7 @@ const LoginForm = () => {
       </div>
       <div className="invalid-feedback m-0 p-0">{formik.errors.password}</div>
       <button className='w-100 mb-3 btn btn-outline-primary' type="submit">{t('auth.logIn')}</button>
-      {error ? <div className="text-danger">{error}</div> : null}
+      {error ? <div className="text-danger">{t(`errors.${error}`)}</div> : null}
     </form>
 
   )

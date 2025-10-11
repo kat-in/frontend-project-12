@@ -18,12 +18,12 @@ const Rename = () => {
         initialValues: { name: modalData.channelName },
         validationSchema: Yup.object({
             name: Yup.string()
-                .required('Обязательное поле')
-                .min(3, 'От 3 до 20 символов')
-                .max(20, 'От 3 до 20 символов')
+                .required(t('validation.required'))
+                .min(3, t('validation.min', { count: 3 }))
+                .max(20, t('validation.max', { count: 20 }))
                 .test(
-                    'Уникальность',
-                    'Такое имя уже существует',
+                    'Unique',
+                    t('modal.isUnique'),
                     (value) => !channels.some(ch => ch.name === value && ch.id !== modalData.channelId)
                 ),
         }),

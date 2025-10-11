@@ -7,9 +7,11 @@ import { useSelector } from "react-redux";
 import { ModalContext } from "../../../contexts/ModalContext";
 import { ChannelContext } from "../../../contexts/ChannelContext";
 import Modal from './Modal'
+import { useTranslation } from "react-i18next";
 
 
 const Add = () => {
+    const {t} = useTranslation()
     const [addChannel] = useAddChannelMutation()
     const { setIsModal } = useContext(ModalContext)
     const channels = useSelector(state => state.allChannels)
@@ -21,12 +23,12 @@ const Add = () => {
         initialValues: { name: '' },
         validationSchema: Yup.object({
             name: Yup.string()
-                .required('Обязательное поле')
-                .min(3, 'От 3 до 20 символов')
-                .max(20, 'От 3 до 20 символов')
+                .required(t('validation.required'))
+                .min(3, t('validation.min', { count: 3 }))
+                .max(20, t('validation.max', { count: 20 }))
                 .test(
-                    'Уникальность',
-                    'Такое имя уже существует',
+                    'Unique',
+                    t('modal.isUnique'),
                     (value) => !channels.some(ch => ch.name === value)
                 ),
         }),
