@@ -10,6 +10,7 @@ import { initReactI18next } from 'react-i18next'
 import { I18nextProvider } from 'react-i18next'
 import ru from './locales/index.js'
 import leoProfanity from 'leo-profanity'
+import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react'
 
 const init = async () => {
   const i18n = i18next.createInstance()
@@ -17,7 +18,10 @@ const init = async () => {
   leoProfanity.clearList()
   leoProfanity.add(leoProfanity.getDictionary('ru'))
 
-  console.log(leoProfanity.list())
+  const rollbarConfig = {
+    accessToken: import.meta.env.VITE_ROLLBAR_ACCESS_TOKEN,
+    environment: import.meta.env.VITE_ROLLBAR_ENV,
+  }
 
   await i18n
     .use(initReactI18next) // передаем экземпляр i18n в react-i18next, который сделает его доступным для всех компонентов через context API.
@@ -39,11 +43,15 @@ const init = async () => {
   })
 
   return createRoot(document.getElementById('root')).render(
-    <I18nextProvider i18n={i18n}>
-      <Provider store={store}>
-        <App socket={socket} />
-      </Provider>
-    </I18nextProvider>
+    <RollbarProvider config={rollbarConfig}>
+      <I18nextProvider i18n={i18n}>
+        <Provider store={store}>
+          <ErrorBoundary>
+            <App socket={socket} />
+          </ErrorBoundary>
+        </Provider>
+      </I18nextProvider>
+    </RollbarProvider>
   )
 }
 
