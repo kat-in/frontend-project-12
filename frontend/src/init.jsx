@@ -19,7 +19,7 @@ const init = async () => {
     await i18n
         .use(initReactI18next) // передаем экземпляр i18n в react-i18next, который сделает его доступным для всех компонентов через context API.
         .init({
-             resources: { ru },// передаем переводы текстов интерфейса в формате JSON
+            resources: { ru },// передаем переводы текстов интерфейса в формате JSON
             fallbackLng: 'ru', // если переводы на языке пользователя недоступны, то будет использоваться язык, указанный в этом поле
             interpolation: {
                 escapeValue: false, // экранирование уже есть в React, поэтому отключаем
@@ -29,6 +29,10 @@ const init = async () => {
     const socket = io('http://localhost:5002', {
         path: '/socket.io',       // путь для проксирования
         transports: ['websocket', 'polling'], // обязательно для прокси
+        reconnection: true,
+        reconnectionAttempts: 5,
+        reconnectionDelay: 1000,
+        timeout: 5000,
     });
 
     //  const socket = io('wws://chat-rfzu.onrender.com:443', {
