@@ -23,8 +23,8 @@ const Add = () => {
     validationSchema: Yup.object({
       name: Yup.string()
         .required(t('validation.required'))
-        .min(3, t('validation.min', { count: 3 }))
-        .max(20, t('validation.max', { count: 20 }))
+        .min(3, t('validation.min'))
+        .max(20, t('validation.max'))
         .test(
           'Unique',
           t('modal.isUnique'),

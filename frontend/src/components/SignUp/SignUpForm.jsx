@@ -7,6 +7,7 @@ import { setCredentials } from '../../store/slices/authSlice'
 import { useAddUserMutation } from '../../api/usersApi'
 import { useTranslation } from 'react-i18next'
 
+
 const SignUpForm = () => {
   const { t } = useTranslation()
   const [addUser] = useAddUserMutation()
@@ -16,9 +17,9 @@ const SignUpForm = () => {
   const formik = useFormik({
     initialValues: { username: '', password: '', confirmPassword: '' },
     validationSchema: Yup.object({
-      username: Yup.string().required('Обязательное поле').min(3, 'Не меньше 3 символов'),
-      password: Yup.string().required('Обязательное поле').min(6, 'Не меньше 6 символов'),
-      confirmPassword: Yup.string().required('Обязательное поле').oneOf([Yup.ref('password'), null], 'Пароль должен совпадать'),
+      username: Yup.string().required(t('validation.required')).min(3, t('validation.minUsername')),
+      password: Yup.string().required('validation.required').min(6, t('validation.minPassword')),
+      confirmPassword: Yup.string().required('validation.required').oneOf([Yup.ref('password'), null], t('validation.confirm')),
     }),
     onSubmit: async (values) => {
       try {

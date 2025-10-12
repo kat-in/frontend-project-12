@@ -11,6 +11,7 @@ export default {
       logOut: 'Выйти',
       registration: 'Регистрация',
       dontHaveAccout: 'Нет аккаунта?',
+
     },
     chat: {
       channels: 'Каналы',
@@ -36,9 +37,12 @@ export default {
     },
     validation: {
       default: 'Некорректное значение',
-      min: 'Минимум {{count}} символа',
-      max: 'Максимум {{count}} символов',
+      min: 'От 3 до 20 символов',
+      max: 'От 3 до 20 символов',
       required: 'Обязательное поле',
+      minPassword: 'Не менее 6 символов',
+      minUsername: 'Не менее 3 символов',
+      confirm: 'Пароли должны совпадать',
     },
     errors: {
       Unauthorized: 'Неверные имя пользователя или пароль',
@@ -47,7 +51,7 @@ export default {
       unknown: 'Произошла неизвестная ошибка',
       youCanGo: 'Но вы можете перейти на',
       onHomePage: 'главную страницу',
-      offLine: 'Нет соединения с интернетом',
+      offLine: 'Ошибка соединения',
       badWord: 'Плохое слово!',
     },
     toast: {
