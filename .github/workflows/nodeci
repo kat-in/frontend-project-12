@@ -34,13 +34,11 @@ jobs:
       - name: Build frontend
         run: npm run build
 
-      # SonarCloud
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
         with:
-           projectBaseDir: .
-           extraProperties: |
-             sonar.organization=kat-in
-             sonar.projectKey=kat-in_frontend-project-12
-        env:
-           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          organization: kat-in                 
+          projectKey: kat-in_frontend-project-12 
+          projectBaseDir: .                      
+          token: ${{ secrets.SONAR_TOKEN }}     
+      
