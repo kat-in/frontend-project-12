@@ -8,6 +8,7 @@ import { ChannelContext } from '../../../contexts/ChannelContext'
 import ModalContainer from './ModalContainer'
 import { useTranslation } from 'react-i18next'
 import notify from '../../../utils/notify'
+import leoProfanity from 'leo-profanity'
 
 const Add = () => {
   const { t } = useTranslation()
@@ -33,6 +34,10 @@ const Add = () => {
     onSubmit: async (values) => {
       if (!navigator.onLine) {
         notify(t('errors.offLine'), 'error')
+        return
+      }
+      if (leoProfanity.check(values.name)) {
+        notify(t('errors.badWord'), 'error')
         return
       }
       try {

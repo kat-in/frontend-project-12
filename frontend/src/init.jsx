@@ -9,9 +9,15 @@ import i18next from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import { I18nextProvider } from 'react-i18next'
 import ru from './locales/index.js'
+import leoProfanity from 'leo-profanity'
 
 const init = async () => {
   const i18n = i18next.createInstance()
+
+  leoProfanity.clearList()
+  leoProfanity.add(leoProfanity.getDictionary('ru'))
+
+  console.log(leoProfanity.list())
 
   await i18n
     .use(initReactI18next) // передаем экземпляр i18n в react-i18next, который сделает его доступным для всех компонентов через context API.
@@ -31,11 +37,6 @@ const init = async () => {
     reconnectionDelay: 1000,
     timeout: 5000,
   })
-
-  //  const socket = io('wws://chat-rfzu.onrender.com:443', {
-  //   path: '/socket.io',       // путь для проксирования
-  //   transports: ['websocket', 'polling'], // обязательно для прокси
-  // });
 
   return createRoot(document.getElementById('root')).render(
     <I18nextProvider i18n={i18n}>

@@ -2,6 +2,7 @@ import { useFormik } from 'formik'
 import { useAddMessageMutation } from '../../../api/messagesApi'
 import { useTranslation } from 'react-i18next'
 import ArrowIcon from '../../icons/ArrowIcon'
+import leoProfanity from 'leo-profanity'
 
 const MessageForm = ({ channelId, username }) => {
   const [addMessage] = useAddMessageMutation()
@@ -10,8 +11,10 @@ const MessageForm = ({ channelId, username }) => {
   const formik = useFormik({
     initialValues: { body: '' },
     onSubmit: async (values) => {
+      const cleanMessage = leoProfanity.clean(values.body)
+
       try {
-        await addMessage({ body: values.body, channelId, username }).unwrap()
+        await addMessage({ body: cleanMessage, channelId, username }).unwrap()
         formik.resetForm()
       }
       catch (err) {

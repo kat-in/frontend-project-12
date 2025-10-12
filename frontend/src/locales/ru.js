@@ -48,6 +48,7 @@ export default {
       youCanGo: 'Но вы можете перейти на',
       onHomePage: 'главную страницу',
       offLine: 'Нет соединения с интернетом',
+      badWord: 'Плохое слово!',
     },
     toast: {
       addChannel: 'Канал создан',
