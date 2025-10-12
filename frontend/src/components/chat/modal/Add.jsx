@@ -11,7 +11,7 @@ import { useTranslation } from "react-i18next";
 
 
 const Add = () => {
-    const {t} = useTranslation()
+    const { t } = useTranslation()
     const [addChannel] = useAddChannelMutation()
     const { setIsModal } = useContext(ModalContext)
     const channels = useSelector(state => state.allChannels)
@@ -38,6 +38,7 @@ const Add = () => {
                 formik.resetForm();
                 setIsModal(false)
                 setActiveChannelId(response.id)
+                socket.emit('newChannel', response);
             }
             catch (err) {
                 console.log(err)
