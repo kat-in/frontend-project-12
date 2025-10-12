@@ -1,9 +1,11 @@
 import cn from "classnames"
 import { useContext } from "react"
 import { ChannelContext } from "../../../contexts/ChannelContext"
+import { useTranslation } from "react-i18next"
 
 
 const RemovableChannel = ({ channel, handleActiveChannel, children }) => {
+    const { t } = useTranslation()
 
     const { activeChannelId, activeDropdownId, setActiveDropdownId } = useContext(ChannelContext)
 
@@ -23,7 +25,7 @@ const RemovableChannel = ({ channel, handleActiveChannel, children }) => {
         )
     }
 
-      const handleDropdown = (e) => {
+    const handleDropdown = (e) => {
         const id = e.target.id
         if (id === activeDropdownId) {
             setActiveDropdownId(null)
@@ -38,7 +40,7 @@ const RemovableChannel = ({ channel, handleActiveChannel, children }) => {
             <button onClick={handleActiveChannel} type="button" id={channel.id} className={channelRemovableClassList(channel.id)}>
                 <span className="me-1">#</span>{channel.name}</button>
             <button onClick={handleDropdown} type="button" id={channel.id} aria-expanded="false" className={buttonRemovableClassList(channel.id, channel.removable)}>
-                <span className="visually-hidden">Управление каналом</span>
+                <span className="visually-hidden">{t('chat.controlChannel')}</span>
             </button>
             {children}
         </div>

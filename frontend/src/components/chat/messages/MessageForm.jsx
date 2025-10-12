@@ -2,6 +2,7 @@ import React from 'react';
 import { useFormik } from 'formik';
 import { useAddMessageMutation } from '../../../api/messagesApi';
 import { useTranslation } from 'react-i18next';
+import ArrowIcon from "../../icons/ArrowIcon"
 
 
 const MessageForm = ({ channelId, username }) => {
@@ -28,7 +29,7 @@ const MessageForm = ({ channelId, username }) => {
                 <div className="input-group has-validation">
                     <input name="body" aria-label="Новое сообщение" placeholder={t('chat.inputMessage')} className="border-0 p-0 ps-2 form-control" onChange={formik.handleChange} value={formik.values.body} />
                     <button type="submit" className="btn btn-group-vertical" disabled="">
-                        <img src="/images/row.svg" alt="Send" width={20} height={20} />
+                        <ArrowIcon />
                         <span className="visually-hidden">{t('chat.submit')}</span>
                     </button>
                 </div>

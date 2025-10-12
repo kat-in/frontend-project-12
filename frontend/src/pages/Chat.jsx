@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { useGetChannelsQuery } from '../api/channelsApi'
 import { useGetMessagesQuery } from '../api/messagesApi'
 import { useDispatch, useSelector } from 'react-redux'
-import { setChannels, addChannel, removeChannel } from '../store/slices/channelsSlice'
+import { setChannels, addChannel, removeChannel, renameChannel } from '../store/slices/channelsSlice'
 import { setMessages, addMessage } from '../store/slices/messagesSlice'
 import { ModalContext } from '../contexts/ModalContext'
 import { ChannelContext } from '../contexts/ChannelContext'
@@ -12,9 +12,12 @@ import Channels from '../components/chat/channels/Channels'
 import MessageForm from '../components/chat/messages/MessageForm'
 import Messages from '../components/chat/messages/Messages'
 import modalType from '../components/chat/modal/modalMode'
+import { useTranslation } from 'react-i18next'
 
 
 const Chat = ({ socket }) => {
+
+    const {t} = useTranslation()
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
@@ -34,9 +37,9 @@ const Chat = ({ socket }) => {
     const handlerAddChannelModal = (e) => {
         setModalMode('add')
         setModalData({
-            name: 'Добавить канал',
-            submit: 'Отправить',
-            cancel: 'Отменить',
+            name: t('chat.addChannel'),
+            submit: t('chat.submit'),
+            cancel: t('chat.cancel'),
             channelName: '',
             channelId: '',
         })
@@ -61,22 +64,26 @@ const Chat = ({ socket }) => {
 
         const handleNewChannel = (payload) => {
             dispatch(addChannel(payload));
-
         }
 
         const handleRemoveChannel = (payload) => {
             dispatch(removeChannel(payload));
+        }
 
+        const handleRenameChannel = (payload) => {
+            dispatch(renameChannel(payload));
         }
 
         socket.on('newMessage', handleNewMessage);
         socket.on('newChannel', handleNewChannel);
         socket.on('removeChannel', handleRemoveChannel);
+        socket.on('renameChannel', handleRenameChannel);
 
         return () => {
             socket.off('newMessage', handleNewMessage);
             socket.off('newChannel', handleNewChannel);
             socket.off('removeChannel', handleRemoveChannel);
+            socket.off('renameChannel', handleRenameChannel);
         }
     }, [dispatch, socket]);
 

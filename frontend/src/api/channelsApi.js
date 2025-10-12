@@ -18,9 +18,6 @@ export const channelsApi = createApi({
         getChannels: builder.query({
             query: () => '',
             providesTags: ['Channels'],
-            refetchOnMountOrArgChange: true,
-            pollingInterval: 2000,
-
         }),
         addChannel: builder.mutation({
             query: name => ({

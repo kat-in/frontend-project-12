@@ -4,6 +4,7 @@ import { useContext } from "react"
 import { ChannelContext } from '../../../contexts/ChannelContext'
 import { ModalContext } from '../../../contexts/ModalContext'
 
+
 const DropdownMenu = ({ channel }) => {
     const { t } = useTranslation()
     const { activeDropdownId, setActiveDropdownId } = useContext(ChannelContext)
@@ -12,9 +13,9 @@ const DropdownMenu = ({ channel }) => {
     const handlerRemoveChannel = (e) => {
         setModalMode('remove')
         setModalData({
-            name: 'Удалить канал',
-            submit: 'Удалить',
-            cancel: 'Отменить',
+            name: t('chat.removeChannel'),
+            submit: t('chat.remove'),
+            cancel: t('chat.cancel'),
             channelName: e.target.name,
             channelId: e.target.parentElement.id,
         })
@@ -24,9 +25,9 @@ const DropdownMenu = ({ channel }) => {
     const handlerRenameChannel = (e) => {
         setModalMode('rename')
         setModalData({
-            name: 'Переименовать канал',
-            submit: 'Отправить',
-            cancel: 'Отменить',
+            name: t('chat.renameChannel'),
+            submit: t('chat.submit'),
+            cancel: t('chat.cancel'),
             channelName: e.target.name,
             channelId: e.target.parentElement.id,
         })

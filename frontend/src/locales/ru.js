@@ -2,6 +2,7 @@ import { removeChannel } from "../store/slices/channelsSlice";
 
 export default {
     translation: {
+        logo: 'Hexlet Chat',
         auth: {
             logIn: 'Войти',
             password: 'Пароль',
@@ -17,6 +18,7 @@ export default {
             channels: 'Каналы',
             remove: 'Удалить',
             removeChannel: 'Удалить канал',
+            addChannel: 'Добавить канал',
             rename: 'Переименовать',
             renameChannel: 'Переименовать канал',
             message: '{{count}} сообщение',
@@ -42,9 +44,12 @@ export default {
         },
         errors: {
             Unauthorized: 'Неверные имя пользователя или пароль',
-            notFound: "Не найдено",
+            notFound: "Страница не найдена",
             serverError: "Ошибка сервера",
             unknown: "Произошла неизвестная ошибка",
+            youCanGo: 'Но вы можете перейти на',
+            onHomePage: 'главную страницу',
+
         }
     },
 }
