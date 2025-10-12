@@ -57,14 +57,17 @@ const Chat = ({ socket }) => {
     useEffect(() => {
         const handleNewMessage = (payload) => {
             dispatch(addMessage(payload));
+            refetch();
         }
 
         const handleNewChannel = (payload) => {
             dispatch(addChannel(payload));
+            refetch();
         }
 
         const handleRemoveChannel = (payload) => {
             dispatch(removeChannel(payload));
+            refetch();
         }
 
         socket.on('newMessage', handleNewMessage);

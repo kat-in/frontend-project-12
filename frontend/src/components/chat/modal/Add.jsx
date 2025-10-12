@@ -38,7 +38,7 @@ const Add = () => {
                 formik.resetForm();
                 setIsModal(false)
                 setActiveChannelId(response.id)
-                socket.emit('newChannel', response);
+    
             }
             catch (err) {
                 console.log(err)
