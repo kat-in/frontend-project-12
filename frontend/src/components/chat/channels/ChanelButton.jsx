@@ -1,7 +1,7 @@
 import { ChannelContext } from '../../../contexts/ChannelContext'
 import { useContext } from 'react'
 import CustomChannel from './CustomChannel'
-import RemovableChannel from './removableChannel'
+import RemovableChannel from './RemovableChannel'
 import DropdownMenu from './DropdownMenu'
 
 
