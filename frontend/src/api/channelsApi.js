@@ -18,6 +18,8 @@ export const channelsApi = createApi({
         getChannels: builder.query({
             query: () => '',
             providesTags: ['Channels'],
+            refetchOnMountOrArgChange: true,
+            pollingInterval: 2000,
 
         }),
         addChannel: builder.mutation({
@@ -28,9 +30,9 @@ export const channelsApi = createApi({
             invalidatesTags: ['Channels'],
         }),
         editChannel: builder.mutation({
-            query: ({name, id}) => ({
+            query: ({ name, id }) => ({
                 method: 'PATCH',
-                body: {name},
+                body: { name },
                 url: `/${id}`,
             }),
             invalidatesTags: ['Channels'],
