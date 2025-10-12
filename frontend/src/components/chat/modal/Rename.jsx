@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux'
 import { ModalContext } from '../../../contexts/ModalContext'
 import { useTranslation } from 'react-i18next'
 import ModalContainer from './ModalContainer'
+import notify from '../../../utils/notify'
 
 const Rename = () => {
   const [editChannel] = useEditChannelMutation()
@@ -33,9 +34,10 @@ const Rename = () => {
         await editChannel({ name: values.name, id }).unwrap()
         formik.resetForm()
         setIsModal(false)
+        notify(t('toast.renameChannel'), 'success')
       }
       catch (err) {
-        console.log(err)
+        notify(err, 'error')
       }
     },
   })

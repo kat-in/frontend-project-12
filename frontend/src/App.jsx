@@ -10,6 +10,7 @@ import Chat from './pages/Chat.jsx'
 import SignUp from './pages/SignUp.jsx'
 import { ModalProvider } from './contexts/ModalContext.jsx'
 import { ChannelProvider } from './contexts/ChannelContext.jsx'
+import ToastProvider from './components/ToastProvider.jsx'
 
 const App = ({ socket }) => {
   return (
@@ -27,9 +28,7 @@ const App = ({ socket }) => {
           </ModalProvider>
         </ChannelProvider>
       </div>
-
-      {/* <div className="Toastify"></div> */}
-
+      <ToastProvider />
     </Router>
   )
 }

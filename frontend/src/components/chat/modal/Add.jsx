@@ -7,6 +7,7 @@ import { ModalContext } from '../../../contexts/ModalContext'
 import { ChannelContext } from '../../../contexts/ChannelContext'
 import ModalContainer from './ModalContainer'
 import { useTranslation } from 'react-i18next'
+import notify from '../../../utils/notify'
 
 const Add = () => {
   const { t } = useTranslation()
@@ -35,9 +36,10 @@ const Add = () => {
         formik.resetForm()
         setIsModal(false)
         setActiveChannelId(response.id)
+        notify(t('toast.addChannel'), 'success')
       }
       catch (err) {
-        console.log(err)
+        notify(err, 'error')
       }
     },
   })

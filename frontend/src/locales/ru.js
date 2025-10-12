@@ -47,7 +47,11 @@ export default {
       unknown: 'Произошла неизвестная ошибка',
       youCanGo: 'Но вы можете перейти на',
       onHomePage: 'главную страницу',
-
+    },
+    toast: {
+      addChannel: 'Канал создан',
+      removeChannel: 'Канал удален',
+      renameChannel: 'Канал переименован',
     },
   },
 }
