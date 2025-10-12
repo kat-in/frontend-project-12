@@ -1,3 +1,5 @@
+install:
+	npm ci
 build:
 	cd frontend && npm install && npm run build
 start:
