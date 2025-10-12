@@ -40,7 +40,7 @@ jobs:
         with:
            projectBaseDir: .
            extraProperties: |
-             sonar.organization=your-organization
-             sonar.projectKey=your-project-key
+             sonar.organization=kat-in
+             sonar.projectKey=kat-in_frontend-project-12
         env:
            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
