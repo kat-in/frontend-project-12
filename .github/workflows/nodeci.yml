@@ -25,13 +25,16 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Install dependencies
+      - name: Install frontend dependencies
+        working-directory: frontend
         run: npm install
 
       #- name: Run linter
+      #  working-directory: frontend
       #  run: npm run lint
 
       - name: Build frontend
+        working-directory: frontend
         run: npm run build
 
       - name: SonarCloud Scan
@@ -39,6 +42,5 @@ jobs:
         with:
           organization: kat-in                 
           projectKey: kat-in_frontend-project-12 
-          projectBaseDir: .                      
+          projectBaseDir: frontend                      
           token: ${{ secrets.SONAR_TOKEN }}     
-      
