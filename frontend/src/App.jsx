@@ -1,4 +1,3 @@
-import React from 'react'
 import {
   BrowserRouter as Router,
   Routes,
@@ -13,10 +12,9 @@ import { ModalProvider } from './contexts/ModalContext.jsx'
 import { ChannelProvider } from './contexts/ChannelContext.jsx'
 
 const App = ({ socket }) => {
-
   return (
     <Router>
-      <div className='d-flex flex-column h-100'>
+      <div className="d-flex flex-column h-100">
         <NavBar />
         <ChannelProvider>
           <ModalProvider>

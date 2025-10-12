@@ -4,21 +4,21 @@ import CustomChannel from './CustomChannel'
 import RemovableChannel from './RemovableChannel'
 import DropdownMenu from './DropdownMenu'
 
-
-
 const ChannelButton = ({ channel }) => {
-    const { setActiveChannelId, setActiveDropdownId } = useContext(ChannelContext)
+  const { setActiveChannelId, setActiveDropdownId } = useContext(ChannelContext)
 
-    const handleActiveChannel = (e) => {
-        setActiveChannelId(e.target.id)
-        setActiveDropdownId(null)
-    }
+  const handleActiveChannel = (e) => {
+    setActiveChannelId(e.target.id)
+    setActiveDropdownId(null)
+  }
 
-    return (channel.removable ?
-        <RemovableChannel channel={channel} handleActiveChannel={handleActiveChannel} >
-            <DropdownMenu channel={channel} />
-        </RemovableChannel> :
-        <CustomChannel channel={channel} handleActiveChannel={handleActiveChannel} />)
+  return (channel.removable
+    ? (
+      <RemovableChannel channel={channel} handleActiveChannel={handleActiveChannel}>
+        <DropdownMenu channel={channel} />
+      </RemovableChannel>
+    )
+    : <CustomChannel channel={channel} handleActiveChannel={handleActiveChannel} />)
 }
 
 export default ChannelButton

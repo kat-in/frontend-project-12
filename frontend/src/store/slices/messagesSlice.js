@@ -7,17 +7,16 @@ const messagesSlice = createSlice({
   reducers: {
     setMessages: (state, { payload }) => payload,
     addMessage: (state, { payload }) => {
-      const existingIds = new Set(state.map(m => m.id));
-        if (!existingIds.has(payload.id)) state.push(payload); 
-    }
+      const existingIds = new Set(state.map(m => m.id))
+      if (!existingIds.has(payload.id)) state.push(payload)
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(removeChannel, (state, { payload }) => {
       const channdelId = payload.channdelId
       return state.filter(message => message.channdelId !== channdelId)
     })
-
-  }
+  },
 })
 
 export const { setMessages, addMessage } = messagesSlice.actions

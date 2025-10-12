@@ -8,7 +8,7 @@ const authSlice = createSlice({
       state.user = payload.username
       state.token = payload.token
     },
-     removeCredentials: (state) => {
+    removeCredentials: (state) => {
       state.user = null
       state.token = null
     },
@@ -18,5 +18,3 @@ const authSlice = createSlice({
 export const { setCredentials, removeCredentials } = authSlice.actions
 
 export default authSlice.reducer
-
-

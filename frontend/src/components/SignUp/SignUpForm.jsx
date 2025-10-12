@@ -1,17 +1,16 @@
-import { useFormik } from "formik"
-import { useNavigate } from 'react-router-dom';
-import * as Yup from 'yup';
-import { useState } from 'react';
+import { useFormik } from 'formik'
+import { useNavigate } from 'react-router-dom'
+import * as Yup from 'yup'
+import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { setCredentials } from "../../store/slices/authSlice";
-import { useAddUserMutation } from "../../api/usersApi"
-import { useTranslation } from 'react-i18next';
-
+import { setCredentials } from '../../store/slices/authSlice'
+import { useAddUserMutation } from '../../api/usersApi'
+import { useTranslation } from 'react-i18next'
 
 const SignUpForm = () => {
   const { t } = useTranslation()
   const [addUser] = useAddUserMutation()
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const [error, setError] = useState(null)
   const formik = useFormik({
@@ -23,18 +22,18 @@ const SignUpForm = () => {
     }),
     onSubmit: async (values) => {
       try {
-        const response = await addUser({ username: values.username, password: values.password }).unwrap();
-        dispatch(setCredentials(response));
+        const response = await addUser({ username: values.username, password: values.password }).unwrap()
+        dispatch(setCredentials(response))
         localStorage.setItem('token', response.token)
         localStorage.setItem('user', response.username)
-        navigate('/');
+        navigate('/')
       }
       catch (err) {
         if (err.status === 409) {
           setError('Логин занят!')
         }
       }
-    }
+    },
   })
 
   return (

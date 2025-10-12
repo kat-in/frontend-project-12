@@ -1,25 +1,21 @@
-import React from 'react';
-import { useFormik } from 'formik';
-import { useNavigate } from 'react-router-dom';
-import * as Yup from 'yup';
-import { useState } from 'react';
+import { useFormik } from 'formik'
+import { useNavigate } from 'react-router-dom'
+import * as Yup from 'yup'
+import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { setCredentials } from '../../store/slices/authSlice.js'
-import { useLoginUserMutation } from '../../api/usersApi.js';
-import { useTranslation } from 'react-i18next';
-import { useRef, useEffect } from 'react';
+import { useLoginUserMutation } from '../../api/usersApi.js'
+import { useTranslation } from 'react-i18next'
+import { useRef, useEffect } from 'react'
 
-import Button from 'react-bootstrap/Button';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
-import Form from 'react-bootstrap/Form';
-import Container from 'react-bootstrap/Container';
-import Image from 'react-bootstrap/Image';
-
-
+import Button from 'react-bootstrap/Button'
+import Col from 'react-bootstrap/Col'
+import Row from 'react-bootstrap/Row'
+import Form from 'react-bootstrap/Form'
+import Container from 'react-bootstrap/Container'
+import Image from 'react-bootstrap/Image'
 
 const LoginForm = () => {
-
   const { t } = useTranslation()
   const inputRef = useRef(null)
   const dispatch = useDispatch()
@@ -35,17 +31,17 @@ const LoginForm = () => {
     }),
     onSubmit: async (values) => {
       try {
-        const response = await loginUser(values).unwrap();
-        dispatch(setCredentials(response));
+        const response = await loginUser(values).unwrap()
+        dispatch(setCredentials(response))
         localStorage.setItem('token', response.token)
         localStorage.setItem('user', response.username)
-        navigate('/');
+        navigate('/')
       }
       catch (err) {
         setError(err.data.message)
         console.log(error)
       }
-    }
+    },
   })
 
   useEffect(() => {

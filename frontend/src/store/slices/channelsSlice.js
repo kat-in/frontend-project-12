@@ -10,9 +10,9 @@ const channelsSlice = createSlice({
       return state.filter(ch => ch.id !== payload.id)
     },
     renameChannel: (state, { payload }) => {
-      const channel = state.find(ch => ch.id === payload.id);
+      const channel = state.find(ch => ch.id === payload.id)
       if (channel) {
-        channel.name = payload.name;
+        channel.name = payload.name
       }
     },
   },
