@@ -38,14 +38,3 @@ jobs:
         run: |
           cd frontend
           npm run build
-
-      # 5. Запуск SonarCloud
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@v2
-        with:
-          projectBaseDir: frontend
-          args: >
-            -Dsonar.organization=kat-in
-            -Dsonar.projectKey=kat-in_frontend-project-12
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
