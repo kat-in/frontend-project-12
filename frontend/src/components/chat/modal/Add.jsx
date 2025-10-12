@@ -31,6 +31,10 @@ const Add = () => {
         ),
     }),
     onSubmit: async (values) => {
+      if (!navigator.onLine) {
+        notify(t('errors.offLine'), 'error')
+        return
+      }
       try {
         const response = await addChannel(values).unwrap()
         formik.resetForm()

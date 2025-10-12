@@ -47,6 +47,7 @@ export default {
       unknown: 'Произошла неизвестная ошибка',
       youCanGo: 'Но вы можете перейти на',
       onHomePage: 'главную страницу',
+      offLine: 'Нет соединения с интернетом',
     },
     toast: {
       addChannel: 'Канал создан',

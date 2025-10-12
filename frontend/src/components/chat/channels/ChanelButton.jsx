@@ -8,6 +8,7 @@ const ChannelButton = ({ channel }) => {
   const { setActiveChannelId, setActiveDropdownId } = useContext(ChannelContext)
 
   const handleActiveChannel = (e) => {
+    console.log(e.target)
     setActiveChannelId(e.target.id)
     setActiveDropdownId(null)
   }

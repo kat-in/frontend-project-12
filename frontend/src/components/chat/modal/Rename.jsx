@@ -30,6 +30,10 @@ const Rename = () => {
     }),
     onSubmit: async (values) => {
       const id = modalData.channelId
+      if (!navigator.onLine) {
+        notify(t('errors.offLine'), 'error')
+        return
+      }
       try {
         await editChannel({ name: values.name, id }).unwrap()
         formik.resetForm()

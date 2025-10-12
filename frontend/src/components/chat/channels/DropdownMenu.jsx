@@ -1,8 +1,8 @@
-import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import { useContext } from 'react'
 import { ChannelContext } from '../../../contexts/ChannelContext'
 import { ModalContext } from '../../../contexts/ModalContext'
+import Dropdown from 'react-bootstrap/Dropdown'
 
 const DropdownMenu = ({ channel }) => {
   const { t } = useTranslation()
@@ -38,10 +38,14 @@ const DropdownMenu = ({ channel }) => {
   const isOpen = isDropdownOpen(channel.id)
 
   return (
-    <div id={channel.id} className={cn('dropdown-menu', { show: isOpen })} style={{ position: 'absolute', inset: '0px auto auto 0px', transform: 'translate3d(51px, 40px, 0px)' }}>
-      <button onClick={handlerRemoveChannel} className="dropdown-item" role="button" tabIndex="0" href="#">{t('chat.remove')}</button>
-      <button onClick={handlerRenameChannel} name={channel.name} className="dropdown-item" tabIndex="0">{t('chat.rename')}</button>
-    </div>
+    <Dropdown.Menu show={isOpen} id={channel.id}>
+      <Dropdown.Item onClick={handlerRemoveChannel}>
+        {t('chat.remove')}
+      </Dropdown.Item>
+      <Dropdown.Item onClick={handlerRenameChannel} name={channel.name}>
+        {t('chat.rename')}
+      </Dropdown.Item>
+    </Dropdown.Menu>
   )
 }
 

@@ -16,7 +16,17 @@ const ModalContainer = ({ formik }) => {
   }
 
   const inputClassnames = cn('mb-2', 'form-control', { 'is-invalid': formik.errors.name })
-  const input = modalMode === 'remove' ? <p className="lead">{t('chat.areYouShure:')}</p> : <input ref={inputEl} onChange={formik.handleChange} value={formik.values.name} name="name" id="name" className={inputClassnames} />
+  const input = modalMode === 'remove'
+    ? (
+      <>
+        <p className="lead">{t('chat.areYouShure:')}</p>
+        <input
+          ref={inputEl}
+          style={{ position: 'absolute', opacity: 0, height: 0, width: 0 }}
+        />
+      </>
+    )
+    : <input ref={inputEl} onChange={formik.handleChange} value={formik.values.name} name="name" id="name" className={inputClassnames} />
   const buttonColor = modalMode === 'remove' ? 'danger' : 'primary'
 
   useEffect(() => {
@@ -41,7 +51,7 @@ const ModalContainer = ({ formik }) => {
           <div className="invalid-feedback">{formik.errors.name}</div>
           <Modal.Footer style={{ borderTop: 'none' }}>
             <Button onClick={handleCloseModal} variant="secondary">{modalData.cancel}</Button>
-            <Button type="submit" variant={buttonColor}>{modalData.submit}</Button>
+            <Button type="submit" disabled={formik.isSubmitting} variant={buttonColor}>{modalData.submit}</Button>
           </Modal.Footer>
         </Modal.Body>
       </form>

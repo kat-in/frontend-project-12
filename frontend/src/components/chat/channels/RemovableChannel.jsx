@@ -1,31 +1,18 @@
-import cn from 'classnames'
 import { useContext } from 'react'
 import { ChannelContext } from '../../../contexts/ChannelContext'
-import { useTranslation } from 'react-i18next'
+
+import Button from 'react-bootstrap/Button'
+import ButtonGroup from 'react-bootstrap/ButtonGroup'
+import Dropdown from 'react-bootstrap/Dropdown'
 
 const RemovableChannel = ({ channel, handleActiveChannel, children }) => {
-  const { t } = useTranslation()
-
   const { activeChannelId, activeDropdownId, setActiveDropdownId } = useContext(ChannelContext)
 
-  const channelRemovableClassList = (id) => {
-    return cn('w-100', 'rounded-0', 'text-start', 'btn', 'text-truncate',
-      { 'btn-secondary': id === activeChannelId }
-    )
-  }
-
-  const buttonRemovableClassList = (id, removable) => {
-    return cn('flex-grow-0', 'btn',
-      {
-        'btn-secondary': id === activeChannelId,
-        'dropdown-toggle': removable,
-        'dropdown-toggle-split': removable,
-      }
-    )
-  }
+  const isActive = id => id === activeChannelId ? 'secondary' : 'light'
 
   const handleDropdown = (e) => {
-    const id = e.target.id
+    const dropdownId = e.target.id.split('-')
+    const id = dropdownId[1]
     if (id === activeDropdownId) {
       setActiveDropdownId(null)
     }
@@ -35,16 +22,20 @@ const RemovableChannel = ({ channel, handleActiveChannel, children }) => {
   }
 
   return (
-    <div role="group" className="d-flex dropdown btn-group">
-      <button onClick={handleActiveChannel} type="button" id={channel.id} className={channelRemovableClassList(channel.id)}>
+    <Dropdown as={ButtonGroup} className="w-100">
+      <Button variant={isActive(channel.id)} onClick={handleActiveChannel} id={channel.id} className="flex-grow-1 text-start">
         <span className="me-1">#</span>
         {channel.name}
-      </button>
-      <button onClick={handleDropdown} type="button" id={channel.id} aria-expanded="false" className={buttonRemovableClassList(channel.id, channel.removable)}>
-        <span className="visually-hidden">{t('chat.controlChannel')}</span>
-      </button>
+      </Button>
+      <Dropdown.Toggle
+        onClick={handleDropdown}
+        split
+        variant={isActive(channel.id)}
+        id={`dropdown-${channel.id}`}
+        className="flex-grow-0"
+      />
       {children}
-    </div>
+    </Dropdown>
   )
 }
 
