@@ -11,9 +11,7 @@ import ru from './locales/index.js'
 import leoProfanity from 'leo-profanity'
 import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react'
 
-
 const init = async () => {
-
   const i18n = i18next.createInstance()
 
   leoProfanity.add(leoProfanity.getDictionary('ru'))

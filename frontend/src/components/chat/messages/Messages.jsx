@@ -3,7 +3,6 @@ import { useRef, useContext, useEffect } from 'react'
 import { ChannelContext } from '../../../contexts/ChannelContext'
 
 const Messages = ({ children, allMessages, allChannels }) => {
- 
   const messagesEndRef = useRef(null)
   const { t } = useTranslation()
   const { activeChannelId } = useContext(ChannelContext)

@@ -14,8 +14,6 @@ import modalType from '../utils/modalMode'
 import { useTranslation } from 'react-i18next'
 import socket from '../api/socket'
 
-
-
 const Chat = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
@@ -24,7 +22,6 @@ const Chat = () => {
   const token = localStorage.getItem('token')
   // const token = useSelector(state => state.auth.token)
   const user = useSelector(state => state.auth.user)
-
 
   const { data: channels } = useGetChannelsQuery()
   const { data: messages = [] } = useGetMessagesQuery()
@@ -53,34 +50,34 @@ const Chat = () => {
       navigate('/login')
       return
     }
-    socket.auth = { token };
-    socket.connect();
+    socket.auth = { token }
+    socket.connect()
     // if (channels) dispatch(setChannels(channels))
     // if (messages) dispatch(setMessages(messages))
   }, [token, navigate, dispatch, channels, messages])
 
- useEffect(() => {
-  const handleAllEvents = (eventName, data) => {
-    console.log('📡 Событие сокета:', eventName, data);
-    
-    if (eventName === 'newMessage') {
-      console.log('💌 Данные нового сообщения:', data);
-      console.log('👤 Текущий пользователь:', user);
-      console.log('🎯 Активный канал:', activeChannelId);
+  useEffect(() => {
+    const handleAllEvents = (eventName, data) => {
+      console.log('📡 Событие сокета:', eventName, data)
+
+      if (eventName === 'newMessage') {
+        console.log('💌 Данные нового сообщения:', data)
+        console.log('👤 Текущий пользователь:', user)
+        console.log('🎯 Активный канал:', activeChannelId)
+      }
     }
-  };
-  
-  socket.onAny(handleAllEvents);
-  
-  return () => {
-    socket.offAny(handleAllEvents);
-  };
-}, [user, activeChannelId]);
+
+    socket.onAny(handleAllEvents)
+
+    return () => {
+      socket.offAny(handleAllEvents)
+    }
+  }, [user, activeChannelId])
 
   useEffect(() => {
     socket.on('connect', () => {
-      console.log('✅ Сокет подключён! id:', socket.id);
-    });
+      console.log('✅ Сокет подключён! id:', socket.id)
+    })
 
     const handleNewMessage = (payload) => {
       dispatch(
@@ -103,7 +100,7 @@ const Chat = () => {
     const handleRemoveChannel = ({ id }) => {
       dispatch(
         channelsApi.util.updateQueryData('getChannels', undefined, (draft) => {
-          return draft.filter((ch) => ch.id !== id)
+          return draft.filter(ch => ch.id !== id)
         })
       )
       // dispatch(removeChannel(payload))
@@ -112,7 +109,7 @@ const Chat = () => {
     const handleRenameChannel = ({ id, name }) => {
       dispatch(
         channelsApi.util.updateQueryData('getChannels', undefined, (draft) => {
-          const ch = draft.find((c) => c.id === id)
+          const ch = draft.find(c => c.id === id)
           if (ch) ch.name = name
         })
       )

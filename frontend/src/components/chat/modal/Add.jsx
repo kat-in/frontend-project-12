@@ -2,7 +2,6 @@ import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { useAddChannelMutation, useGetChannelsQuery, channelsApi } from '../../../api/channelsApi'
 import { useContext } from 'react'
-import { useSelector } from 'react-redux'
 import { ModalContext } from '../../../contexts/ModalContext'
 import { ChannelContext } from '../../../contexts/ChannelContext'
 import ModalContainer from './ModalContainer'
@@ -11,14 +10,11 @@ import notify from '../../../utils/notify'
 import leoProfanity from 'leo-profanity'
 import { useDispatch } from 'react-redux'
 
-
-
 const Add = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const [addChannel] = useAddChannelMutation()
   const { setIsModal } = useContext(ModalContext)
-  // const channels = useSelector(state => state.allChannels)
   const { data: channels = [] } = useGetChannelsQuery()
   const { setActiveChannelId } = useContext(ChannelContext)
 

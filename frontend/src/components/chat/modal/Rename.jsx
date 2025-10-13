@@ -2,7 +2,6 @@ import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { useEditChannelMutation, useGetChannelsQuery, channelsApi } from '../../../api/channelsApi'
 import { useContext } from 'react'
-import { useSelector } from 'react-redux'
 import { ModalContext } from '../../../contexts/ModalContext'
 import { useTranslation } from 'react-i18next'
 import ModalContainer from './ModalContainer'
@@ -12,7 +11,6 @@ import { useDispatch } from 'react-redux'
 const Rename = () => {
   const [editChannel] = useEditChannelMutation()
   const dispatch = useDispatch()
-  // const channels = useSelector(state => state.allChannels)
   const { data: channels = [] } = useGetChannelsQuery()
   const { setIsModal, modalData } = useContext(ModalContext)
   const { t } = useTranslation()
@@ -38,7 +36,7 @@ const Rename = () => {
         const newChannel = await editChannel({ name: values.name, id }).unwrap()
         dispatch(
           channelsApi.util.updateQueryData('getChannels', undefined, (draft) => {
-            const ch = draft.find((c) => c.id === id)
+            const ch = draft.find(c => c.id === id)
             if (ch) ch.name = newChannel.name
           })
         )

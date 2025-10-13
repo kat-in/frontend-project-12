@@ -38,7 +38,8 @@ const SignUpForm = () => {
           formik.setFieldError('confirmPassword', t('auth.userExists'))
           inputRef.current.focus()
           inputRef.current.select()
-        } else {
+        }
+        else {
           formik.setFieldError('confirmPassword', t('auth.userExists'))
         }
       }
@@ -111,7 +112,10 @@ const SignUpForm = () => {
                 onChange={formik.handleChange}
                 isInvalid={!!formik.errors.confirmPassword}
               />
-              <Form.Control.Feedback type="invalid" tooltip>{formik.errors.confirmPassword}  </Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid" tooltip>
+                {formik.errors.confirmPassword}
+                {' '}
+              </Form.Control.Feedback>
             </Form.Group>
             <Form.Group as={Col}>
               <Button variant="outline-primary" disabled={formik.isSubmitting} className="mt-3 mb-3 w-100" type="submit">{t('auth.signUp')}</Button>

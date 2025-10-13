@@ -35,10 +35,10 @@ const RemovableChannel = ({ channel, handleActiveChannel, children }) => {
         id={`dropdown-${channel.id}`}
         className="flex-grow-0"
       >
-      <span className="visually-hidden">{t('chat.controlChannel')}</span>
-    </Dropdown.Toggle>
+        <span className="visually-hidden">{t('chat.controlChannel')}</span>
+      </Dropdown.Toggle>
       { children }
-    </Dropdown >
+    </Dropdown>
   )
 }
 
