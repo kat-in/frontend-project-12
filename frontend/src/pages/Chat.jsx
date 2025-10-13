@@ -57,6 +57,8 @@ const Chat = () => {
 
   useEffect(() => {
 
+    if (process.env.NODE_ENV === 'test') return;
+
     const socket = io('http://localhost:5002', {
       path: '/socket.io', // путь для проксирования
       transports: ['websocket'], // обязательно для прокси
