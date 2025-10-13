@@ -1,5 +1,6 @@
 import { useContext } from 'react'
 import { ChannelContext } from '../../../contexts/ChannelContext'
+import { useTranslation } from 'react-i18next'
 
 import Button from 'react-bootstrap/Button'
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
@@ -7,7 +8,7 @@ import Dropdown from 'react-bootstrap/Dropdown'
 
 const RemovableChannel = ({ channel, handleActiveChannel, children }) => {
   const { activeChannelId, activeDropdownId, setActiveDropdownId } = useContext(ChannelContext)
-
+  const { t } = useTranslation()
   const isActive = id => id === activeChannelId ? 'secondary' : 'light'
 
   const handleDropdown = (e) => {
@@ -33,9 +34,11 @@ const RemovableChannel = ({ channel, handleActiveChannel, children }) => {
         variant={isActive(channel.id)}
         id={`dropdown-${channel.id}`}
         className="flex-grow-0"
-      />
-      {children}
-    </Dropdown>
+      >
+      <span className="visually-hidden">{t('chat.controlChannel')}</span>
+    </Dropdown.Toggle>
+      { children }
+    </Dropdown >
   )
 }
 
