@@ -112,7 +112,7 @@ const SignUpForm = () => {
               <Form.Control.Feedback type="invalid" tooltip>{formik.errors.confirmPassword}</Form.Control.Feedback>
             </Form.Group>
             <Form.Group as={Col}>
-              <Button variant="outline-primary" className="mt-3 mb-3 w-100" type="submit">{t('auth.signUp')}</Button>
+              <Button variant="outline-primary" disabled={formik.isSubmitting} className="mt-3 mb-3 w-100" type="submit">{t('auth.signUp')}</Button>
             </Form.Group>
           </Col>
         </Row>
