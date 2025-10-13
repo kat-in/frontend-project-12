@@ -23,7 +23,7 @@ const Chat = () => {
   // const token = useSelector(state => state.auth.token)
   const user = useSelector(state => state.auth.user)
   const { data: channels } = useGetChannelsQuery()
-  const { data: messages, refetch } = useGetMessagesQuery()
+  const { data: messages } = useGetMessagesQuery()
 
   const { setIsModal, modalMode, setModalMode, setModalData } = useContext(ModalContext)
   const { activeChannelId, setActiveDropdownId } = useContext(ChannelContext)
@@ -81,7 +81,7 @@ const Chat = () => {
       socket.off('removeChannel', handleRemoveChannel)
       socket.off('renameChannel', handleRenameChannel)
     }
-  }, [dispatch, socket, refetch])
+  }, [dispatch, socket])
 
   const Modal = modalType(modalMode)
 
