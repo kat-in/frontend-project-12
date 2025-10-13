@@ -39,7 +39,7 @@ const SignUpForm = () => {
           inputRef.current.focus()
           inputRef.current.select()
         } else {
-          formik.setStatus('confirmPassword', t('errors.serverError'))
+          formik.setStatus(t('errors.serverError'))
         }
       }
     },
@@ -63,8 +63,11 @@ const SignUpForm = () => {
               className="position-relative mb-3"
             >
               <h1 className="text-center mb-4">{t('auth.registration')}</h1>
-
-
+              {formik.status && (
+                <Alert variant="danger" className="mb-3">
+                  {formik.status}
+                </Alert>
+              )}
               <Form.Label visuallyHidden>{t('auth.username')}</Form.Label>
               <Form.Control
                 ref={inputRef}
@@ -114,11 +117,6 @@ const SignUpForm = () => {
               />
               <Form.Control.Feedback type="invalid" tooltip>{formik.errors.confirmPassword}</Form.Control.Feedback>
             </Form.Group>
-            {formik.status === t('auth.userExists') && (
-              <Alert variant="danger" className="mb-3">
-                {formik.status}
-              </Alert>
-            )}
             <Form.Group as={Col}>
               <Button variant="outline-primary" disabled={formik.isSubmitting} className="mt-3 mb-3 w-100" type="submit">{t('auth.signUp')}</Button>
             </Form.Group>
