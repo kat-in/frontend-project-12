@@ -32,7 +32,7 @@ const SignUpForm = () => {
       }
       catch (err) {
         if (err.status === 409) {
-          formik.setFieldError('username', t('auth.userExist'))
+          formik.setFieldError('username', t('auth.userExists'))
         } else {
           formik.setFieldError('username', t('errors.serverError'))
         }
