@@ -7,7 +7,6 @@ import { setCredentials } from '../../store/slices/authSlice'
 import { useAddUserMutation } from '../../api/usersApi'
 import { useTranslation } from 'react-i18next'
 
-
 const SignUpForm = () => {
   const { t } = useTranslation()
   const [addUser] = useAddUserMutation()

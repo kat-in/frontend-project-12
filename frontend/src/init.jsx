@@ -4,7 +4,6 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 import { Provider } from 'react-redux'
 import store from './store/store.js'
 import App from './App.jsx'
-import { io } from 'socket.io-client'
 import i18next from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import { I18nextProvider } from 'react-i18next'
@@ -12,7 +11,7 @@ import ru from './locales/index.js'
 import leoProfanity from 'leo-profanity'
 import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react'
 
-const init = async () => {
+const init = async (socket) => {
   const i18n = i18next.createInstance()
 
   leoProfanity.clearList()
@@ -32,15 +31,6 @@ const init = async () => {
         escapeValue: false, // экранирование уже есть в React, поэтому отключаем
       },
     })
-
-  const socket = io('http://localhost:5002', {
-    path: '/socket.io', // путь для проксирования
-    transports: ['websocket', 'polling'], // обязательно для прокси
-    reconnection: true,
-    reconnectionAttempts: 5,
-    reconnectionDelay: 1000,
-    timeout: 5000,
-  })
 
   return createRoot(document.getElementById('root')).render(
     <RollbarProvider config={rollbarConfig}>
