@@ -12,7 +12,7 @@ import { ModalProvider } from './contexts/ModalContext.jsx'
 import { ChannelProvider } from './contexts/ChannelContext.jsx'
 import ToastProvider from './components/ToastProvider.jsx'
 
-const App = ({ socket }) => {
+const App = () => {
   return (
     <Router>
       <div className="d-flex flex-column h-100">
@@ -20,7 +20,7 @@ const App = ({ socket }) => {
         <ChannelProvider>
           <ModalProvider>
             <Routes>
-              <Route path="/" element={<Chat socket={socket} />} />
+              <Route path="/" element={<Chat />} />
               <Route path="/login" element={<LogIn />} />
               <Route path="/signup" element={<SignUp />} />
               <Route path="*" element={<NotFound />} />

@@ -10,10 +10,10 @@ import { I18nextProvider } from 'react-i18next'
 import ru from './locales/index.js'
 import leoProfanity from 'leo-profanity'
 import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react'
-import createSocket from './api/socket.js'
+
 
 const init = async () => {
-  const socket = createSocket()
+
   const i18n = i18next.createInstance()
 
   leoProfanity.add(leoProfanity.getDictionary('ru'))
@@ -38,7 +38,7 @@ const init = async () => {
       <I18nextProvider i18n={i18n}>
         <Provider store={store}>
           <ErrorBoundary>
-            <App socket={socket} />
+            <App />
           </ErrorBoundary>
         </Provider>
       </I18nextProvider>

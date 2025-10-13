@@ -12,8 +12,9 @@ import MessageForm from '../components/chat/messages/MessageForm'
 import Messages from '../components/chat/messages/Messages'
 import modalType from '../utils/modalMode'
 import { useTranslation } from 'react-i18next'
+import { socket } from '../api/socket'
 
-const Chat = ({ socket }) => {
+const Chat = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const dispatch = useDispatch()

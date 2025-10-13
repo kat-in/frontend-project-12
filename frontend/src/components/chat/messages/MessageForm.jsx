@@ -3,6 +3,7 @@ import { useAddMessageMutation } from '../../../api/messagesApi'
 import { useTranslation } from 'react-i18next'
 import ArrowIcon from '../../icons/ArrowIcon'
 import leoProfanity from 'leo-profanity'
+import notify from '../../../utils/notify'
 
 const MessageForm = ({ channelId, username }) => {
   const [addMessage] = useAddMessageMutation()
@@ -18,7 +19,7 @@ const MessageForm = ({ channelId, username }) => {
         formik.resetForm()
       }
       catch (err) {
-        console.log(err.data.message)
+          notify(err.data.message, 'error')
       }
     },
 

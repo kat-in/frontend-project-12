@@ -12,4 +12,6 @@ const createSocket = () => {
   return socket
 }
 
+export const socket = createSocket()
+
 export default createSocket
