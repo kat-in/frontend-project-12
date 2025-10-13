@@ -1,6 +1,6 @@
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
-import { useAddChannelMutation } from '../../../api/channelsApi'
+import { useAddChannelMutation, useGetChannelsQuery, channelsApi } from '../../../api/channelsApi'
 import { useContext } from 'react'
 import { useSelector } from 'react-redux'
 import { ModalContext } from '../../../contexts/ModalContext'
@@ -9,12 +9,17 @@ import ModalContainer from './ModalContainer'
 import { useTranslation } from 'react-i18next'
 import notify from '../../../utils/notify'
 import leoProfanity from 'leo-profanity'
+import { useDispatch } from 'react-redux'
+
+
 
 const Add = () => {
   const { t } = useTranslation()
+  const dispatch = useDispatch()
   const [addChannel] = useAddChannelMutation()
   const { setIsModal } = useContext(ModalContext)
-  const channels = useSelector(state => state.allChannels)
+  // const channels = useSelector(state => state.allChannels)
+  const { data: channels = [] } = useGetChannelsQuery()
   const { setActiveChannelId } = useContext(ChannelContext)
 
   const formik = useFormik({
@@ -32,16 +37,17 @@ const Add = () => {
         ),
     }),
     onSubmit: async (values) => {
-      if (!navigator.onLine) {
-        notify(t('errors.offLine'), 'error')
-        return
-      }
       const cleanChannel = leoProfanity.clean(values.name)
       try {
-        const response = await addChannel({name: cleanChannel}).unwrap()
+        const newChannel = await addChannel({ name: cleanChannel }).unwrap()
+        dispatch(
+          channelsApi.util.updateQueryData('getChannels', undefined, (draft) => {
+            draft.push(newChannel)
+          })
+        )
         formik.resetForm()
         setIsModal(false)
-        setActiveChannelId(response.id)
+        setActiveChannelId(newChannel.id)
         notify(t('toast.addChannel'), 'success')
       }
       catch (err) {

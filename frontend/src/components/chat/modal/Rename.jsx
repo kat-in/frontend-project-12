@@ -1,16 +1,19 @@
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
-import { useEditChannelMutation } from '../../../api/channelsApi'
+import { useEditChannelMutation, useGetChannelsQuery, channelsApi } from '../../../api/channelsApi'
 import { useContext } from 'react'
 import { useSelector } from 'react-redux'
 import { ModalContext } from '../../../contexts/ModalContext'
 import { useTranslation } from 'react-i18next'
 import ModalContainer from './ModalContainer'
 import notify from '../../../utils/notify'
+import { useDispatch } from 'react-redux'
 
 const Rename = () => {
   const [editChannel] = useEditChannelMutation()
-  const channels = useSelector(state => state.allChannels)
+  const dispatch = useDispatch()
+  // const channels = useSelector(state => state.allChannels)
+  const { data: channels = [] } = useGetChannelsQuery()
   const { setIsModal, modalData } = useContext(ModalContext)
   const { t } = useTranslation()
 
@@ -30,12 +33,15 @@ const Rename = () => {
     }),
     onSubmit: async (values) => {
       const id = modalData.channelId
-      if (!navigator.onLine) {
-        notify(t('errors.offLine'), 'error')
-        return
-      }
+
       try {
-        await editChannel({ name: values.name, id }).unwrap()
+        const newChannel = await editChannel({ name: values.name, id }).unwrap()
+        dispatch(
+          channelsApi.util.updateQueryData('getChannels', undefined, (draft) => {
+            const ch = draft.find((c) => c.id === id)
+            if (ch) ch.name = newChannel.name
+          })
+        )
         formik.resetForm()
         setIsModal(false)
         notify(t('toast.renameChannel'), 'success')

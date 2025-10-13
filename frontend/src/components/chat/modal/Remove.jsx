@@ -18,10 +18,6 @@ const Remove = () => {
     initialValues: { name: '' },
     onSubmit: async () => {
       const id = modalData.channelId
-      if (!navigator.onLine) {
-        notify(t('errors.offLine'), 'error')
-        return
-      }
       try {
         await removeChannel(id).unwrap()
         formik.resetForm()

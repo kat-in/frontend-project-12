@@ -31,7 +31,7 @@ const MessageForm = ({ channelId, username }) => {
       <form onSubmit={formik.handleSubmit} className="py-1 border rounded-2">
         <div className="input-group has-validation">
           <input name="body" aria-label="Новое сообщение" placeholder={t('chat.inputMessage')} className="border-0 p-0 ps-2 form-control" onChange={formik.handleChange} value={formik.values.body} />
-          <button type="submit" className="btn btn-group-vertical" disabled="">
+          <button type="submit" disabled={!formik.values.body.trim()} className="btn btn-group-vertical" >
             <ArrowIcon />
             <span className="visually-hidden">{t('chat.submit')}</span>
           </button>

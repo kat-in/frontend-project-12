@@ -1,10 +1,10 @@
 import { useEffect, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useGetChannelsQuery } from '../api/channelsApi'
+import { useGetChannelsQuery, channelsApi } from '../api/channelsApi'
 import { useGetMessagesQuery, messagesApi } from '../api/messagesApi'
 import { useDispatch, useSelector } from 'react-redux'
-import { setChannels, addChannel, removeChannel, renameChannel } from '../store/slices/channelsSlice'
-import { setMessages, addMessage } from '../store/slices/messagesSlice'
+// import { setChannels, addChannel, removeChannel, renameChannel } from '../store/slices/channelsSlice'
+// import { setMessages, addMessage } from '../store/slices/messagesSlice'
 import { ModalContext } from '../contexts/ModalContext'
 import { ChannelContext } from '../contexts/ChannelContext'
 import Channels from '../components/chat/channels/Channels'
@@ -30,8 +30,8 @@ const Chat = () => {
   const { setIsModal, modalMode, setModalMode, setModalData } = useContext(ModalContext)
   const { activeChannelId, setActiveDropdownId } = useContext(ChannelContext)
 
-  const allChannels = useSelector(state => state.allChannels)
-  const allMessages = useSelector(state => state.allMessages)
+  // const allChannels = useSelector(state => state.allChannels)
+  // const allMessages = useSelector(state => state.allMessages)
 
   const handlerAddChannelModal = () => {
     setModalMode('add')
@@ -51,8 +51,8 @@ const Chat = () => {
       navigate('/login')
       return
     }
-    if (channels) dispatch(setChannels(channels))
-    if (messages) dispatch(setMessages(messages))
+    // if (channels) dispatch(setChannels(channels))
+    // if (messages) dispatch(setMessages(messages))
   }, [token, navigate, dispatch, channels, messages])
 
   useEffect(() => {
@@ -89,14 +89,13 @@ const Chat = () => {
       // dispatch(removeChannel(payload))
     }
 
-    const handleRenameChannel = (payload) => {
-        dispatch(
+    const handleRenameChannel = ({ id, name }) => {
+      dispatch(
         channelsApi.util.updateQueryData('getChannels', undefined, (draft) => {
-          const ch = draft.find((c) => c.id === payload.id)
-          if (ch) ch.name = payload.name
+          const ch = draft.find((c) => c.id === id)
+          if (ch) ch.name = name
         })
       )
-      // dispatch(renameChannel(payload))
     }
 
     socket.on('newMessage', handleNewMessage)

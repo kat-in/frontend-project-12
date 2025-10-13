@@ -1,28 +1,28 @@
-import { createSlice } from '@reduxjs/toolkit'
-import { removeChannel } from './channelsSlice'
+// import { createSlice } from '@reduxjs/toolkit'
+// import { removeChannel } from './channelsSlice'
 
-const messagesSlice = createSlice({
-  name: 'allMessages',
-  initialState: [],
-  reducers: {
-    setMessages: (state, { payload }) => payload,
-    addMessage: (state, { payload }) => {
-      if (!payload.id) {
-        state.push(payload)
-        return
-      } 
-      const existingIds = new Set(state.map(m => m.id))
-      if (!existingIds.has(payload.id)) state.push(payload)
-    },
-  },
-  extraReducers: (builder) => {
-    builder.addCase(removeChannel, (state, { payload }) => {
-      const channelId = payload.channelId
-      return state.filter(message => message.channelId !== channelId)
-    })
-  },
-})
+// const messagesSlice = createSlice({
+//   name: 'allMessages',
+//   initialState: [],
+//   reducers: {
+//     setMessages: (state, { payload }) => payload,
+//     addMessage: (state, { payload }) => {
+//       if (!payload.id) {
+//         state.push(payload)
+//         return
+//       } 
+//       const existingIds = new Set(state.map(m => m.id))
+//       if (!existingIds.has(payload.id)) state.push(payload)
+//     },
+//   },
+//   extraReducers: (builder) => {
+//     builder.addCase(removeChannel, (state, { payload }) => {
+//       const channelId = payload.channelId
+//       return state.filter(message => message.channelId !== channelId)
+//     })
+//   },
+// })
 
-export const { setMessages, addMessage } = messagesSlice.actions
+// export const { setMessages, addMessage } = messagesSlice.actions
 
-export default messagesSlice.reducer
+// export default messagesSlice.reducer
