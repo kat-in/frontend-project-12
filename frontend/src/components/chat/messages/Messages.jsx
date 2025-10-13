@@ -3,9 +3,12 @@ import { useRef, useContext, useEffect } from 'react'
 import { ChannelContext } from '../../../contexts/ChannelContext'
 
 const Messages = ({ children, allMessages, allChannels }) => {
+ 
   const messagesEndRef = useRef(null)
   const { t } = useTranslation()
   const { activeChannelId } = useContext(ChannelContext)
+   console.log('📝 Все сообщения:', allMessages); // Добавьте лог
+  console.log('📊 Активный канал:', activeChannelId);
 
   const messagesList = allMessages
     ?.filter(channel => channel.channelId === activeChannelId)

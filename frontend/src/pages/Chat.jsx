@@ -25,7 +25,7 @@ const Chat = () => {
   // const token = useSelector(state => state.auth.token)
   const user = useSelector(state => state.auth.user)
   const { data: channels } = useGetChannelsQuery()
-  const { data: messages = [], isSuccess } = useGetMessagesQuery()
+  const { data: messages = [] } = useGetMessagesQuery()
 
   const { setIsModal, modalMode, setModalMode, setModalData } = useContext(ModalContext)
   const { activeChannelId, setActiveDropdownId } = useContext(ChannelContext)
@@ -51,19 +51,20 @@ const Chat = () => {
       navigate('/login')
       return
     }
+    socket.auth = { token };
+    socket.connect();
     // if (channels) dispatch(setChannels(channels))
     // if (messages) dispatch(setMessages(messages))
   }, [token, navigate, dispatch, channels, messages])
 
   useEffect(() => {
-  if (!isSuccess) return; 
     socket.on('connect', () => {
       console.log('✅ Сокет подключён! id:', socket.id);
     });
 
 
     const handleNewMessage = (payload) => {
-      
+
       dispatch(
         messagesApi.util.updateQueryData('getMessages', undefined, (draft) => {
           draft.push(payload)
@@ -73,15 +74,15 @@ const Chat = () => {
     }
 
     const handleNewChannel = (payload) => {
-         dispatch(
+      dispatch(
         channelsApi.util.updateQueryData('getChannels', undefined, (draft) => {
           draft.push(payload)
         })
       )
     }
-      // dispatch(addChannel(payload))
+    // dispatch(addChannel(payload))
 
-    const handleRemoveChannel = ({id}) => {
+    const handleRemoveChannel = ({ id }) => {
       dispatch(
         channelsApi.util.updateQueryData('getChannels', undefined, (draft) => {
           return draft.filter((ch) => ch.id !== id)
@@ -118,8 +119,8 @@ const Chat = () => {
     <>
       <div className="container h-100 my-4 overflow-hidden rounded shadow">
         <div className="row h-100 bg-white flex-md-row">
-          <Channels allChannels={channels||[]} handlerAddChannelModal={handlerAddChannelModal} />
-          <Messages allChannels={channels||[]} allMessages={messages||[]}>
+          <Channels allChannels={channels || []} handlerAddChannelModal={handlerAddChannelModal} />
+          <Messages allChannels={channels || []} allMessages={messages || []}>
             <MessageForm channelId={activeChannelId} username={user} />
           </Messages>
         </div>
