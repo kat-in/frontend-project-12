@@ -24,6 +24,8 @@ const Chat = () => {
   const token = localStorage.getItem('token')
   // const token = useSelector(state => state.auth.token)
   const user = useSelector(state => state.auth.user)
+
+
   const { data: channels } = useGetChannelsQuery()
   const { data: messages = [] } = useGetMessagesQuery()
 
@@ -57,18 +59,30 @@ const Chat = () => {
     // if (messages) dispatch(setMessages(messages))
   }, [token, navigate, dispatch, channels, messages])
 
+ useEffect(() => {
+  const handleAllEvents = (eventName, data) => {
+    console.log('📡 Событие сокета:', eventName, data);
+    
+    if (eventName === 'newMessage') {
+      console.log('💌 Данные нового сообщения:', data);
+      console.log('👤 Текущий пользователь:', user);
+      console.log('🎯 Активный канал:', activeChannelId);
+    }
+  };
+  
+  socket.onAny(handleAllEvents);
+  
+  return () => {
+    socket.offAny(handleAllEvents);
+  };
+}, [user, activeChannelId]);
+
   useEffect(() => {
     socket.on('connect', () => {
       console.log('✅ Сокет подключён! id:', socket.id);
     });
 
-
     const handleNewMessage = (payload) => {
-      console.log('📨 Получено новое сообщение через сокет:', payload);
-      console.log('👤 Текущий пользователь:', user);
-      console.log('🆔 ID сообщения:', payload.id);
-      console.log('💬 Текст сообщения:', payload.body);
-
       dispatch(
         messagesApi.util.updateQueryData('getMessages', undefined, (draft) => {
           draft.push(payload)

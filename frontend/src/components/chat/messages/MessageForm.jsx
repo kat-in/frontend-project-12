@@ -6,10 +6,9 @@ import leoProfanity from 'leo-profanity'
 import notify from '../../../utils/notify'
 
 const MessageForm = ({ channelId, username }) => {
+
   const [addMessage] = useAddMessageMutation()
   const { t } = useTranslation()
-
-
   const formik = useFormik({
     initialValues: { body: '' },
     onSubmit: async (values) => {
@@ -18,9 +17,12 @@ const MessageForm = ({ channelId, username }) => {
       try {
         await addMessage({ body: cleanMessage, channelId, username }).unwrap()
         formik.resetForm()
+
       }
       catch (err) {
-        notify(err.data.message, 'error')
+
+        const errorMessage = err?.data?.message || err?.error || 'Ошибка отправки сообщения';
+        notify(errorMessage, 'error');
       }
     },
 
