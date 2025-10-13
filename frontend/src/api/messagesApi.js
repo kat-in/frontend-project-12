@@ -3,9 +3,9 @@ import { socket } from './socket'
 
 export const messagesApi = createApi({
   reducerPath: 'messages',
+  tagTypes: ['Messages'],
   baseQuery: fetchBaseQuery({
     baseUrl: '/api/v1/messages',
-    tagTypes: ['Messages'],
     prepareHeaders: (headers, { getState }) => {
       const token = getState().auth.token // берем токен из authSlice
       if (token) {
@@ -26,6 +26,7 @@ export const messagesApi = createApi({
           updateCachedData(draft => {
             draft.push(newMessage)
           })
+          dispatch(messagesApi.util.invalidateTags(['Messages']))
         }
 
         socket.on('newMessage', messageHandler)
