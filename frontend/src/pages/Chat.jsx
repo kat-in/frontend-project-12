@@ -3,8 +3,6 @@ import { useNavigate } from 'react-router-dom'
 import { useGetChannelsQuery, channelsApi } from '../api/channelsApi'
 import { useGetMessagesQuery, messagesApi } from '../api/messagesApi'
 import { useDispatch, useSelector } from 'react-redux'
-// import { setChannels, addChannel, removeChannel, renameChannel } from '../store/slices/channelsSlice'
-// import { setMessages, addMessage } from '../store/slices/messagesSlice'
 import { ModalContext } from '../contexts/ModalContext'
 import { ChannelContext } from '../contexts/ChannelContext'
 import Channels from '../components/chat/channels/Channels'
@@ -20,7 +18,6 @@ const Chat = () => {
   const dispatch = useDispatch()
 
   const token = localStorage.getItem('token')
-  // const token = useSelector(state => state.auth.token)
   const user = useSelector(state => state.auth.user)
 
   const { data: channels } = useGetChannelsQuery()
@@ -28,9 +25,6 @@ const Chat = () => {
 
   const { setIsModal, modalMode, setModalMode, setModalData } = useContext(ModalContext)
   const { activeChannelId, setActiveDropdownId } = useContext(ChannelContext)
-
-  // const allChannels = useSelector(state => state.allChannels)
-  // const allMessages = useSelector(state => state.allMessages)
 
   const handlerAddChannelModal = () => {
     setModalMode('add')
@@ -52,40 +46,15 @@ const Chat = () => {
     }
     socket.auth = { token }
     socket.connect()
-    // if (channels) dispatch(setChannels(channels))
-    // if (messages) dispatch(setMessages(messages))
   }, [token, navigate, dispatch, channels, messages])
 
   useEffect(() => {
-    const handleAllEvents = (eventName, data) => {
-      console.log('📡 Событие сокета:', eventName, data)
-
-      if (eventName === 'newMessage') {
-        console.log('💌 Данные нового сообщения:', data)
-        console.log('👤 Текущий пользователь:', user)
-        console.log('🎯 Активный канал:', activeChannelId)
-      }
-    }
-
-    socket.onAny(handleAllEvents)
-
-    return () => {
-      socket.offAny(handleAllEvents)
-    }
-  }, [user, activeChannelId])
-
-  useEffect(() => {
-    socket.on('connect', () => {
-      console.log('✅ Сокет подключён! id:', socket.id)
-    })
-
     const handleNewMessage = (payload) => {
       dispatch(
         messagesApi.util.updateQueryData('getMessages', undefined, (draft) => {
           draft.push(payload)
         })
       )
-      // dispatch(addMessage(payload))
     }
 
     const handleNewChannel = (payload) => {
@@ -95,7 +64,6 @@ const Chat = () => {
         })
       )
     }
-    // dispatch(addChannel(payload))
 
     const handleRemoveChannel = ({ id }) => {
       dispatch(
@@ -103,7 +71,6 @@ const Chat = () => {
           return draft.filter(ch => ch.id !== id)
         })
       )
-      // dispatch(removeChannel(payload))
     }
 
     const handleRenameChannel = ({ id, name }) => {
