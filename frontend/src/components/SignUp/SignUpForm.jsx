@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux'
 import { setCredentials } from '../../store/slices/authSlice'
 import { useAddUserMutation } from '../../api/usersApi'
 import { useTranslation } from 'react-i18next'
-import { Button, Col, Row, Form, Container, Image } from 'react-bootstrap'
+import { Button, Col, Row, Form, Container, Image, Alert } from 'react-bootstrap'
 
 const SignUpForm = () => {
   const { t } = useTranslation()
@@ -38,7 +38,7 @@ const SignUpForm = () => {
           inputRef.current.focus()
           inputRef.current.select()
         } else {
-          formik.setFieldError('confirmPassword', t('errors.serverError'))
+          formik.setStatus('confirmPassword', t('errors.serverError'))
         }
       }
     },
@@ -62,6 +62,8 @@ const SignUpForm = () => {
               className="position-relative mb-3"
             >
               <h1 className="text-center mb-4">{t('auth.registration')}</h1>
+             
+
               <Form.Label visuallyHidden>{t('auth.username')}</Form.Label>
               <Form.Control
                 ref={inputRef}
@@ -71,7 +73,7 @@ const SignUpForm = () => {
                 placeholder={t('auth.username')}
                 value={formik.values.username}
                 onChange={formik.handleChange}
-                isInvalid={!!formik.errors.username}
+                isInvalid={!!formik.errors.username && formik.touched.username}
               />
               <Form.Control.Feedback type="invalid" tooltip>{formik.errors.username}</Form.Control.Feedback>
             </Form.Group>
@@ -107,9 +109,9 @@ const SignUpForm = () => {
                 value={formik.values.confirmPassword}
                 placeholder={t('auth.confirmPassword')}
                 onChange={formik.handleChange}
-                isInvalid={!!formik.errors.confirmPassword}
+                isInvalid={!!formik.errors.confirmPassword && formik.touched.confirmPassword}
               />
-              <Form.Control.Feedback type="invalid" tooltip>{formik.errors.confirmPassword}</Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid" show={!!formik.errors.confirmPassword} tooltip>{formik.errors.confirmPassword}</Form.Control.Feedback>
             </Form.Group>
             <Form.Group as={Col}>
               <Button variant="outline-primary" disabled={formik.isSubmitting} className="mt-3 mb-3 w-100" type="submit">{t('auth.signUp')}</Button>
