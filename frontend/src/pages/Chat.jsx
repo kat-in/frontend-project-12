@@ -55,8 +55,8 @@ const Chat = () => {
 
   useEffect(() => {
     const handleNewMessage = (payload) => {
-      refetch()
       dispatch(addMessage(payload))
+        refetch()
     }
 
     const handleNewChannel = (payload) => {
