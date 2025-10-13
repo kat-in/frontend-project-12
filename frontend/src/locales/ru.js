@@ -11,7 +11,7 @@ export default {
       logOut: 'Выйти',
       registration: 'Регистрация',
       dontHaveAccout: 'Нет аккаунта?',
-      userExists: 'Taкой пользователь уже существует',
+      userExists: 'Такой пользователь уже существует',
     },
     chat: {
       channels: 'Каналы',
