@@ -17,7 +17,7 @@ const SignUpForm = () => {
   const formik = useFormik({
     initialValues: { username: '', password: '', confirmPassword: '' },
     validationSchema: Yup.object({
-      username: Yup.string().required(t('validation.required')).min(3, t('validation.minUsername')),
+      username: Yup.string().required(t('validation.required')).min(3, t('validation.minMax')).max(20, t('validation.minMax')),
       password: Yup.string().required(t('validation.required')).min(6, t('validation.minPassword')),
       confirmPassword: Yup.string().required(t('validation.required')).oneOf([Yup.ref('password'), null], t('validation.confirm')),
     }),
@@ -31,6 +31,7 @@ const SignUpForm = () => {
       }
       catch (err) {
         if (err.status === 409) {
+          console.log(formik.errors.username)
           formik.setStatus(t('auth.userExists'))
           formik.setFieldError('username', ' ')
           formik.setFieldError('password', ' ')

@@ -37,11 +37,9 @@ export default {
     },
     validation: {
       default: 'Некорректное значение',
-      min: 'От 3 до 20 символов',
-      max: 'От 3 до 20 символов',
+      minMax: 'От 3 до 20 символов',
       required: 'Обязательное поле',
       minPassword: 'Не менее 6 символов',
-      minUsername: 'Не менее 3 символов',
       confirm: 'Пароли должны совпадать',
     },
     errors: {
