@@ -19,6 +19,7 @@ export const messagesApi = createApi({
     getMessages: builder.query({
       query: () => '',
       providesTags: ['Messages'],
+      pollingInterval: 2000,
       async onCacheEntryAdded(arg, { updateCachedData, cacheDataLoaded, cacheEntryRemoved }) {
         await cacheDataLoaded;
 
