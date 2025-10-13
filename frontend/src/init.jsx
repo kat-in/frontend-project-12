@@ -31,16 +31,18 @@ const init = async () => {
       },
     })
 
-  return createRoot(document.getElementById('root')).render(
-    <RollbarProvider config={rollbarConfig}>
-      <I18nextProvider i18n={i18n}>
-        <Provider store={store}>
-          <ErrorBoundary>
-            <App />
-          </ErrorBoundary>
-        </Provider>
-      </I18nextProvider>
-    </RollbarProvider>)
+  return createRoot(document.getElementById('root'))
+    .render(
+      <RollbarProvider config={rollbarConfig}>
+        <I18nextProvider i18n={i18n}>
+          <Provider store={store}>
+            <ErrorBoundary>
+              <App />
+            </ErrorBoundary>
+          </Provider>
+        </I18nextProvider>
+      </RollbarProvider>
+    )
 }
 
 export default init
