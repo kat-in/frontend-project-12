@@ -1,13 +1,13 @@
 import { useFormik } from 'formik'
-// import { useAddMessageMutation } from '../../../api/messagesApi'
+import { useAddMessageMutation } from '../../../api/messagesApi'
 import { useTranslation } from 'react-i18next'
 import ArrowIcon from '../../icons/ArrowIcon'
 import leoProfanity from 'leo-profanity'
 import notify from '../../../utils/notify'
-import { socket } from '../../../api/socket'
+
 
 const MessageForm = ({ channelId, username }) => {
-  // const [addMessage] = useAddMessageMutation()
+  const [addMessage] = useAddMessageMutation()
   const { t } = useTranslation()
 
   const formik = useFormik({
@@ -16,15 +16,8 @@ const MessageForm = ({ channelId, username }) => {
       const cleanMessage = leoProfanity.clean(values.body)
 
       try {
-        socket.emit(
-          'newMessage',
-          { body: cleanMessage, channelId, username: username.username || username },
-          (response) => {
-            if (response.status === 'ok') formik.resetForm()
-          }
-        )
-        // await addMessage({ body: cleanMessage, channelId, username }).unwrap()
-        // formik.resetForm()
+        await addMessage({ body: cleanMessage, channelId, username }).unwrap()
+        formik.resetForm()
       }
       catch (err) {
         notify(err.data.message, 'error')
