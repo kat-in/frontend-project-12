@@ -7,7 +7,7 @@ const socket = io(
     transports: ['websocket', 'polling'],
     secure: import.meta.env.MODE === 'production',
     withCredentials: true,
-  }
+  },
 )
 
 export default socket

@@ -40,8 +40,7 @@ const init = async () => {
           </ErrorBoundary>
         </Provider>
       </I18nextProvider>
-    </RollbarProvider>
-  )
+    </RollbarProvider>)
 }
 
 export default init

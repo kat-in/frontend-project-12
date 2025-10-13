@@ -53,7 +53,7 @@ const Chat = () => {
       dispatch(
         messagesApi.util.updateQueryData('getMessages', undefined, (draft) => {
           draft.push(payload)
-        })
+        }),
       )
     }
 
@@ -61,7 +61,7 @@ const Chat = () => {
       dispatch(
         channelsApi.util.updateQueryData('getChannels', undefined, (draft) => {
           draft.push(payload)
-        })
+        }),
       )
     }
 
@@ -69,7 +69,7 @@ const Chat = () => {
       dispatch(
         channelsApi.util.updateQueryData('getChannels', undefined, (draft) => {
           return draft.filter(ch => ch.id !== id)
-        })
+        }),
       )
     }
 
@@ -78,7 +78,7 @@ const Chat = () => {
         channelsApi.util.updateQueryData('getChannels', undefined, (draft) => {
           const ch = draft.find(c => c.id === id)
           if (ch) ch.name = name
-        })
+        }),
       )
     }
 

@@ -14,10 +14,10 @@ const ChannelButton = ({ channel }) => {
 
   return (channel.removable
     ? (
-      <RemovableChannel channel={channel} handleActiveChannel={handleActiveChannel}>
-        <DropdownMenu channel={channel} />
-      </RemovableChannel>
-    )
+        <RemovableChannel channel={channel} handleActiveChannel={handleActiveChannel}>
+          <DropdownMenu channel={channel} />
+        </RemovableChannel>
+      )
     : <CustomChannel channel={channel} handleActiveChannel={handleActiveChannel} />)
 }
 
