@@ -12,8 +12,8 @@ import MessageForm from '../components/chat/messages/MessageForm'
 import Messages from '../components/chat/messages/Messages'
 import modalType from '../utils/modalMode'
 import { useTranslation } from 'react-i18next'
-// import  socket  from '../api/socket'
-import { io } from 'socket.io-client'
+import socket from '../api/socket'
+
 
 
 const Chat = () => {
@@ -57,36 +57,46 @@ const Chat = () => {
 
   useEffect(() => {
 
-    if (process.env.NODE_ENV === 'test') return;
-
-    const socket = io('http://localhost:5002', {
-      path: '/socket.io', // путь для проксирования
-      transports: ['websocket'], // обязательно для прокси
-      reconnection: true,
-      reconnectionAttempts: 5,
-      reconnectionDelay: 1000,
-      timeout: 5000,
-    })
-
     socket.on('connect', () => {
       console.log('✅ Сокет подключён! id:', socket.id);
     });
 
 
     const handleNewMessage = (payload) => {
-      dispatch(addMessage(payload))
+      dispatch(
+        messagesApi.util.updateQueryData('getMessages', undefined, (draft) => {
+          draft.push(payload)
+        })
+      )
+      // dispatch(addMessage(payload))
     }
 
     const handleNewChannel = (payload) => {
-      dispatch(addChannel(payload))
+         dispatch(
+        channelsApi.util.updateQueryData('getChannels', undefined, (draft) => {
+          draft.push(payload)
+        })
+      )
     }
+      // dispatch(addChannel(payload))
 
-    const handleRemoveChannel = (payload) => {
-      dispatch(removeChannel(payload))
+    const handleRemoveChannel = ({id}) => {
+      dispatch(
+        channelsApi.util.updateQueryData('getChannels', undefined, (draft) => {
+          return draft.filter((ch) => ch.id !== id)
+        })
+      )
+      // dispatch(removeChannel(payload))
     }
 
     const handleRenameChannel = (payload) => {
-      dispatch(renameChannel(payload))
+        dispatch(
+        channelsApi.util.updateQueryData('getChannels', undefined, (draft) => {
+          const ch = draft.find((c) => c.id === payload.id)
+          if (ch) ch.name = payload.name
+        })
+      )
+      // dispatch(renameChannel(payload))
     }
 
     socket.on('newMessage', handleNewMessage)
@@ -100,7 +110,7 @@ const Chat = () => {
       socket.off('removeChannel', handleRemoveChannel)
       socket.off('renameChannel', handleRenameChannel)
     }
-  }, [])
+  }, [socket, dispatch])
 
   const Modal = modalType(modalMode)
 
@@ -108,8 +118,8 @@ const Chat = () => {
     <>
       <div className="container h-100 my-4 overflow-hidden rounded shadow">
         <div className="row h-100 bg-white flex-md-row">
-          <Channels allChannels={allChannels} handlerAddChannelModal={handlerAddChannelModal} />
-          <Messages allChannels={allChannels} allMessages={allMessages}>
+          <Channels allChannels={channels||[]} handlerAddChannelModal={handlerAddChannelModal} />
+          <Messages allChannels={channels||[]} allMessages={messages||[]}>
             <MessageForm channelId={activeChannelId} username={user} />
           </Messages>
         </div>
