@@ -20,7 +20,6 @@ const MessageForm = ({ channelId, username }) => {
 
       try {
         const result = await addMessage({ body: cleanMessage, channelId, username }).unwrap()
-        dispatch(addMessageToStore(result))
         formik.resetForm()
       }
       catch (err) {
