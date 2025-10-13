@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux'
 import { setCredentials } from '../../store/slices/authSlice'
 import { useAddUserMutation } from '../../api/usersApi'
 import { useTranslation } from 'react-i18next'
-import { Button, Col, Row, Form, Container, Image} from 'react-bootstrap'
+import { Button, Col, Row, Form, Container, Image } from 'react-bootstrap'
 
 const SignUpForm = () => {
   const { t } = useTranslation()
@@ -31,9 +31,10 @@ const SignUpForm = () => {
       }
       catch (err) {
         if (err.status === 409) {
-          formik.setFieldError('confirmPassword', t('auth.userExists'))
+          formik.setStatus(t('auth.userExists'))
           formik.setFieldError('username', ' ')
           formik.setFieldError('password', ' ')
+          formik.setFieldError('confirmPassword', ' ')
           inputRef.current.focus()
           inputRef.current.select()
         } else {
@@ -61,7 +62,7 @@ const SignUpForm = () => {
               className="position-relative mb-3"
             >
               <h1 className="text-center mb-4">{t('auth.registration')}</h1>
-  
+
               <Form.Label visuallyHidden>{t('auth.username')}</Form.Label>
               <Form.Control
                 ref={inputRef}
@@ -110,6 +111,7 @@ const SignUpForm = () => {
                 isInvalid={!!formik.errors.confirmPassword && formik.touched.confirmPassword}
               />
               <Form.Control.Feedback type="invalid" tooltip>{formik.errors.confirmPassword}</Form.Control.Feedback>
+              <div>{formik.status ?? null}</div>
             </Form.Group>
             <Form.Group as={Col}>
               <Button variant="outline-primary" disabled={formik.isSubmitting} className="mt-3 mb-3 w-100" type="submit">{t('auth.signUp')}</Button>
