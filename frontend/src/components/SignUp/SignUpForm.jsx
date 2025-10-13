@@ -33,6 +33,8 @@ const SignUpForm = () => {
         console.log(err.status)
         if (err.status === 409) {
           formik.setFieldError('confirmPassword', t('auth.userExists'))
+          formik.setFieldError('username', ' ')
+          formik.setFieldError('password', ' ')
         } else {
           formik.setFieldError('confirmPassword', t('errors.serverError'))
         }
