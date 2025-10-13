@@ -13,7 +13,7 @@ import Messages from '../components/chat/messages/Messages'
 import modalType from '../utils/modalMode'
 import { useTranslation } from 'react-i18next'
 // import  socket  from '../api/socket'
-  import { io } from 'socket.io-client'
+import { io } from 'socket.io-client'
 
 
 const Chat = () => {
@@ -57,14 +57,19 @@ const Chat = () => {
 
   useEffect(() => {
 
- const socket = io('http://localhost:5002', {
-    path: '/socket.io', // путь для проксирования
-    transports: ['websocket', 'polling'], // обязательно для прокси
-    reconnection: true,
-    reconnectionAttempts: 5,
-    reconnectionDelay: 1000,
-    timeout: 5000,
-  })
+    const socket = io('http://localhost:5002', {
+      path: '/socket.io', // путь для проксирования
+      transports: ['websocket'], // обязательно для прокси
+      reconnection: true,
+      reconnectionAttempts: 5,
+      reconnectionDelay: 1000,
+      timeout: 5000,
+    })
+
+    socket.on('connect', () => {
+      console.log('✅ Сокет подключён! id:', socket.id);
+    });
+
 
     const handleNewMessage = (payload) => {
       dispatch(addMessage(payload))
