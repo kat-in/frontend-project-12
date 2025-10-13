@@ -7,6 +7,10 @@ const messagesSlice = createSlice({
   reducers: {
     setMessages: (state, { payload }) => payload,
     addMessage: (state, { payload }) => {
+      if (!payload.id) {
+        state.push(payload)
+        return
+      } 
       const existingIds = new Set(state.map(m => m.id))
       if (!existingIds.has(payload.id)) state.push(payload)
     },
