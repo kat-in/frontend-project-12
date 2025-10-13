@@ -35,6 +35,8 @@ const SignUpForm = () => {
           formik.setFieldError('confirmPassword', t('auth.userExists'))
           formik.setFieldError('username', ' ')
           formik.setFieldError('password', ' ')
+          inputRef.current.focus()
+          inputRef.current.select()
         } else {
           formik.setFieldError('confirmPassword', t('errors.serverError'))
         }
