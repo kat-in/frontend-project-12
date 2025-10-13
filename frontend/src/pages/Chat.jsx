@@ -98,7 +98,7 @@ const Chat = () => {
       socket.off('removeChannel', handleRemoveChannel)
       socket.off('renameChannel', handleRenameChannel)
     }
-  }, [dispatch])
+  }, [])
 
   const Modal = modalType(modalMode)
 
