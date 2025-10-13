@@ -72,7 +72,7 @@ const SignUpForm = () => {
                 placeholder={t('auth.username')}
                 value={formik.values.username}
                 onChange={formik.handleChange}
-                isInvalid={!!formik.errors.username && formik.touched.username}
+                isInvalid={!!formik.errors.username}
               />
               <Form.Control.Feedback type="invalid" tooltip>{formik.errors.username}</Form.Control.Feedback>
             </Form.Group>
@@ -89,7 +89,7 @@ const SignUpForm = () => {
                 value={formik.values.password}
                 placeholder={t('auth.password')}
                 onChange={formik.handleChange}
-                isInvalid={!!formik.errors.password && formik.touched.password}
+                isInvalid={!!formik.errors.password}
               />
               <Form.Control.Feedback type="invalid" tooltip>{formik.errors.password}</Form.Control.Feedback>
             </Form.Group>
