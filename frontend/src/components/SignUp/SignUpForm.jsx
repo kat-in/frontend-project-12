@@ -30,10 +30,11 @@ const SignUpForm = () => {
         navigate('/')
       }
       catch (err) {
+        console.log(err.status)
         if (err.status === 409) {
-          formik.setFieldError('username', t('auth.userExists'))
+          formik.setFieldError('confirmPassword', t('auth.userExists'))
         } else {
-          formik.setFieldError('username', t('errors.serverError'))
+          formik.setFieldError('confirmPassword', t('errors.serverError'))
         }
       }
     },
