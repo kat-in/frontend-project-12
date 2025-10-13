@@ -1,5 +1,4 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { socket } from './socket'
 
 export const messagesApi = createApi({
   reducerPath: 'messages',
@@ -19,7 +18,6 @@ export const messagesApi = createApi({
     getMessages: builder.query({
       query: () => '',
       providesTags: ['Messages'],
-      pollingInterval: 1000,
     }),
     addMessage: builder.mutation({
       query: message => ({
