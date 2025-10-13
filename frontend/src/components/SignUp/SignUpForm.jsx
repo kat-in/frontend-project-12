@@ -1,7 +1,7 @@
 import { useFormik } from 'formik'
 import { useNavigate } from 'react-router-dom'
 import * as Yup from 'yup'
-import { useState, useRef, useEffect } from 'react'
+import { useRef, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { setCredentials } from '../../store/slices/authSlice'
 import { useAddUserMutation } from '../../api/usersApi'
@@ -14,7 +14,6 @@ const SignUpForm = () => {
   const [addUser] = useAddUserMutation()
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const [error, setError] = useState(null)
   const formik = useFormik({
     initialValues: { username: '', password: '', confirmPassword: '' },
     validationSchema: Yup.object({
@@ -99,10 +98,11 @@ const SignUpForm = () => {
                 style={{ height: '60px' }}
                 type="password"
                 name="confirmPassword"
+                className="mt-3"
                 value={formik.values.confirmPassword}
                 placeholder={t('auth.confirmPassword')}
                 onChange={formik.handleChange}
-                isInvalid={!!formik.errors.confirmPassword || !!error}
+                isInvalid={!!formik.errors.confirmPassword}
               />
               <Form.Control.Feedback type="invalid" tooltip>{formik.errors.confirmPassword}</Form.Control.Feedback>
             </Form.Group>
