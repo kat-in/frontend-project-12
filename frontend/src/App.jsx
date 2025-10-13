@@ -20,7 +20,7 @@ const App = () => {
         <ChannelProvider>
           <ModalProvider>
             <Routes>
-              <Route path="/" element={<Chat />} />
+              <Route path="/" element={<Chat/>} />
               <Route path="/login" element={<LogIn />} />
               <Route path="/signup" element={<SignUp />} />
               <Route path="*" element={<NotFound />} />

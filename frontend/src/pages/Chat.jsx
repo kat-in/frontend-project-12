@@ -12,7 +12,7 @@ import MessageForm from '../components/chat/messages/MessageForm'
 import Messages from '../components/chat/messages/Messages'
 import modalType from '../utils/modalMode'
 import { useTranslation } from 'react-i18next'
-import { socket } from '../api/socket'
+import  socket  from '../api/socket'
 
 
 const Chat = () => {
@@ -55,6 +55,7 @@ const Chat = () => {
   }, [token, navigate, dispatch, channels, messages])
 
   useEffect(() => {
+
     const handleNewMessage = (payload) => {
       dispatch(addMessage(payload))
     }
