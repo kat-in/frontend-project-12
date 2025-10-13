@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux'
 import { setCredentials } from '../../store/slices/authSlice'
 import { useAddUserMutation } from '../../api/usersApi'
 import { useTranslation } from 'react-i18next'
-import { Button, Col, Row, Form, Container, Image, Alert } from 'react-bootstrap'
+import { Button, Col, Row, Form, Container, Image} from 'react-bootstrap'
 
 const SignUpForm = () => {
   const { t } = useTranslation()
@@ -30,17 +30,14 @@ const SignUpForm = () => {
         navigate('/')
       }
       catch (err) {
-        console.log(err.status)
         if (err.status === 409) {
-          formik.setStatus(t('auth.userExists'))
-          formik.setFieldError('confirmPassword', ' ')
+          formik.setFieldError('confirmPassword', t('auth.userExists'))
           formik.setFieldError('username', ' ')
           formik.setFieldError('password', ' ')
           inputRef.current.focus()
           inputRef.current.select()
-          navigate('/')
         } else {
-          formik.setStatus(t('errors.serverError'))
+          formik.setFieldError('confirmPassword', t('auth.userExists'))
         }
       }
     },
@@ -64,11 +61,7 @@ const SignUpForm = () => {
               className="position-relative mb-3"
             >
               <h1 className="text-center mb-4">{t('auth.registration')}</h1>
-              {formik.status && (
-                <Alert variant="danger" className="mb-3">
-                  {formik.status}
-                </Alert>
-              )}
+  
               <Form.Label visuallyHidden>{t('auth.username')}</Form.Label>
               <Form.Control
                 ref={inputRef}
