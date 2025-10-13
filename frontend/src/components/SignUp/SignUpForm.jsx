@@ -38,9 +38,11 @@ const SignUpForm = () => {
     },
   })
 
+  useEffect(() => {
+    if (inputRef) inputRef.current.focus()
+  }, [])
+
   return (
-
-
     <Container>
       <Form onSubmit={formik.handleSubmit}>
         <Row>

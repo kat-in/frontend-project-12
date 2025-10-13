@@ -7,9 +7,7 @@ import { setCredentials } from '../../store/slices/authSlice.js'
 import { useLoginUserMutation } from '../../api/usersApi.js'
 import { useTranslation } from 'react-i18next'
 import { useRef, useEffect } from 'react'
-
-import { Button, Col, Row, Form, Container, Image} from 'react-bootstrap'
-
+import { Button, Col, Row, Form, Container, Image } from 'react-bootstrap'
 
 const LoginForm = () => {
   const { t } = useTranslation()
