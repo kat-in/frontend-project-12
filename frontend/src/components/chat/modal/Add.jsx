@@ -29,7 +29,7 @@ const Add = () => {
         .test(
           'Unique',
           t('modal.isUnique'),
-          value => !channels.some(ch => ch.name === value),
+          value => !channels.some(ch => ch.name === value)
         ),
     }),
     onSubmit: async (values) => {
@@ -39,7 +39,7 @@ const Add = () => {
         dispatch(
           channelsApi.util.updateQueryData('getChannels', undefined, (draft) => {
             draft.push(newChannel)
-          }),
+          })
         )
         formik.resetForm()
         setIsModal(false)

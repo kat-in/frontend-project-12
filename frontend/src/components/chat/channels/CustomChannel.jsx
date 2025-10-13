@@ -11,7 +11,7 @@ const CustomChannel = ({ channel, handleActiveChannel }) => {
         'btn-secondary': id === activeChannelId,
         'dropdown-toggle': removable,
         'dropdown-toggle-split': removable,
-      },
+      }
     )
   }
   return (

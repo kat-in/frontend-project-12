@@ -26,7 +26,7 @@ const Rename = () => {
         .test(
           'Unique',
           t('modal.isUnique'),
-          value => !channels.some(ch => ch.name === value && ch.id !== modalData.channelId),
+          value => !channels.some(ch => ch.name === value && ch.id !== modalData.channelId)
         ),
     }),
     onSubmit: async (values) => {
@@ -38,7 +38,7 @@ const Rename = () => {
           channelsApi.util.updateQueryData('getChannels', undefined, (draft) => {
             const ch = draft.find(c => c.id === id)
             if (ch) ch.name = newChannel.name
-          }),
+          })
         )
         formik.resetForm()
         setIsModal(false)
