@@ -32,7 +32,7 @@ const SignUpForm = () => {
       }
       catch (err) {
         if (err.status === 409) {
-          setError(t(''))
+          setError(t('auth.userExist'))
         }
       }
     },
