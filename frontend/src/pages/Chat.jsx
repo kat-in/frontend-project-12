@@ -55,12 +55,7 @@ const Chat = () => {
 
   useEffect(() => {
     const handleNewMessage = (payload) => {
-      dispatch(
-        messagesApi.util.updateQueryData('getMessages', undefined, draft => {
-          draft.push(payload)
-        }))
-    //   dispatch(addMessage(payload))
-    //     refetch()
+      dispatch(addMessage(payload))
     }
 
     const handleNewChannel = (payload) => {
