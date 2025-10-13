@@ -19,46 +19,31 @@ export const messagesApi = createApi({
     getMessages: builder.query({
       query: () => '',
       providesTags: ['Messages'],
-      pollingInterval: 2000,
-      async onCacheEntryAdded(arg, { updateCachedData, cacheDataLoaded, cacheEntryRemoved }) {
-        await cacheDataLoaded;
-
-        const messageHandler = (newMessage) => {
-          updateCachedData(draft => {
-            draft.push(newMessage)
-          })
-        }
-
-        socket.on('newMessage', messageHandler)
-
-        await cacheEntryRemoved
-        socket.off('newMessage', messageHandler)
-      }
-    }),
-    addMessage: builder.mutation({
-      query: message => ({
-        method: 'POST',
-        body: message,
+      pollingInterval: 1000,
+      addMessage: builder.mutation({
+        query: message => ({
+          method: 'POST',
+          body: message,
+        }),
+        invalidatesTags: ['Messages'],
       }),
-      invalidatesTags: ['Messages'],
-    }),
-    editMessage: builder.mutation({
-      query: ({ id, body }) => ({
-        method: 'PATCH',
-        body,
-        url: id,
+      editMessage: builder.mutation({
+        query: ({ id, body }) => ({
+          method: 'PATCH',
+          body,
+          url: id,
+        }),
+        invalidatesTags: ['Messages'],
       }),
-      invalidatesTags: ['Messages'],
-    }),
-    removeMessage: builder.mutation({
-      query: id => ({
-        method: 'DELETE',
-        url: id,
+      removeMessage: builder.mutation({
+        query: id => ({
+          method: 'DELETE',
+          url: id,
+        }),
+        invalidatesTags: ['Messages'],
       }),
-      invalidatesTags: ['Messages'],
     }),
-  }),
-})
+  })
 
 export const { useGetMessagesQuery, useAddMessageMutation, useEditMessageMutation, useRemoveMessageMutation } = messagesApi
 // END
