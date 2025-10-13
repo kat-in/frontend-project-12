@@ -16,7 +16,6 @@ const init = async () => {
   const socket = createSocket()
   const i18n = i18next.createInstance()
 
-  leoProfanity.clearList()
   leoProfanity.add(leoProfanity.getDictionary('ru'))
 
   const rollbarConfig = {
