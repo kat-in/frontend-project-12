@@ -6,7 +6,6 @@ export const messagesApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: '/api/v1/messages',
     prepareHeaders: (headers, { getState }) => {
-      // const token = getState().auth.token // берем токен из authSlice
       const token = getState().auth.token || localStorage.getItem('token')
       if (token) {
         headers.set('Authorization', `Bearer ${token}`)

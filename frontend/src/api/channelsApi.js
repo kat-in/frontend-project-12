@@ -6,7 +6,7 @@ export const channelsApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: '/api/v1/channels',
     prepareHeaders: (headers, { getState }) => {
-      const token = getState().auth.token // берем токен из authSlice
+      const token = getState().auth.token 
       if (token) {
         headers.set('Authorization', `Bearer ${token}`)
       }
