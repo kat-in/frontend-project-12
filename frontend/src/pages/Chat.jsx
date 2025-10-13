@@ -14,6 +14,7 @@ import modalType from '../utils/modalMode'
 import { useTranslation } from 'react-i18next'
 import { socket } from '../api/socket'
 
+
 const Chat = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()

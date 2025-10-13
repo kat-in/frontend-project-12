@@ -4,14 +4,11 @@ import { useTranslation } from 'react-i18next'
 import ArrowIcon from '../../icons/ArrowIcon'
 import leoProfanity from 'leo-profanity'
 import notify from '../../../utils/notify'
-import { useDispatch } from 'react-redux'
-import { addMessage as addMessageToStore } from '../../../store/slices/messagesSlice'
-
 
 const MessageForm = ({ channelId, username }) => {
   const [addMessage] = useAddMessageMutation()
   const { t } = useTranslation()
-  const dispatch = useDispatch()
+
 
   const formik = useFormik({
     initialValues: { body: '' },
