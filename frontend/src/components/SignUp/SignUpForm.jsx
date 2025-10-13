@@ -32,7 +32,8 @@ const SignUpForm = () => {
       catch (err) {
         console.log(err.status)
         if (err.status === 409) {
-          formik.setFieldError('confirmPassword', t('auth.userExists'))
+          formik.setStatus(t('auth.userExists'))
+          formik.setFieldError('confirmPassword', ' ')
           formik.setFieldError('username', ' ')
           formik.setFieldError('password', ' ')
           inputRef.current.focus()
@@ -62,7 +63,7 @@ const SignUpForm = () => {
               className="position-relative mb-3"
             >
               <h1 className="text-center mb-4">{t('auth.registration')}</h1>
-             
+
 
               <Form.Label visuallyHidden>{t('auth.username')}</Form.Label>
               <Form.Control
@@ -111,8 +112,13 @@ const SignUpForm = () => {
                 onChange={formik.handleChange}
                 isInvalid={!!formik.errors.confirmPassword && formik.touched.confirmPassword}
               />
-              <Form.Control.Feedback type="invalid" show={!!formik.errors.confirmPassword} >{formik.errors.confirmPassword}</Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid" tooltip>{formik.errors.confirmPassword}</Form.Control.Feedback>
             </Form.Group>
+            {formik.status === t('auth.userExists') && (
+              <Alert variant="danger" className="mb-3">
+                {formik.status}
+              </Alert>
+            )}
             <Form.Group as={Col}>
               <Button variant="outline-primary" disabled={formik.isSubmitting} className="mt-3 mb-3 w-100" type="submit">{t('auth.signUp')}</Button>
             </Form.Group>
