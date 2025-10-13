@@ -111,7 +111,7 @@ const SignUpForm = () => {
                 onChange={formik.handleChange}
                 isInvalid={!!formik.errors.confirmPassword && formik.touched.confirmPassword}
               />
-              <Form.Control.Feedback type="invalid" show={!!formik.errors.confirmPassword} tooltip>{formik.errors.confirmPassword}</Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid" show={!!formik.errors.confirmPassword} >{formik.errors.confirmPassword}</Form.Control.Feedback>
             </Form.Group>
             <Form.Group as={Col}>
               <Button variant="outline-primary" disabled={formik.isSubmitting} className="mt-3 mb-3 w-100" type="submit">{t('auth.signUp')}</Button>
