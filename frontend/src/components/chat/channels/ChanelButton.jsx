@@ -16,6 +16,7 @@ const ChannelButton = ({ channel }) => {
   return (channel.removable
     ? (
       <RemovableChannel channel={channel} handleActiveChannel={handleActiveChannel}>
+        <span className="visually-hidden">{t('chat.controlChannel')}</span>
         <DropdownMenu channel={channel} />
       </RemovableChannel>
     )

@@ -39,7 +39,6 @@ const DropdownMenu = ({ channel }) => {
 
   return (
     <Dropdown.Menu show={isOpen} id={channel.id}>
-     <span className="visually-hidden">{t('chat.controlChannel')}</span>
       <Dropdown.Item onClick={handlerRemoveChannel}>
         {t('chat.remove')}
       </Dropdown.Item>
