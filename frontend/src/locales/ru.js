@@ -11,7 +11,7 @@ export default {
       logOut: 'Выйти',
       registration: 'Регистрация',
       dontHaveAccout: 'Нет аккаунта?',
-
+      userExists: 'Taкой пользователь уже существует',
     },
     chat: {
       channels: 'Каналы',
@@ -53,6 +53,7 @@ export default {
       onHomePage: 'главную страницу',
       offLine: 'Ошибка соединения',
       badWord: 'Плохое слово!',
+
     },
     toast: {
       addChannel: 'Канал создан',

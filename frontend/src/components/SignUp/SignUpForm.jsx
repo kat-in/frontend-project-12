@@ -1,14 +1,16 @@
 import { useFormik } from 'formik'
 import { useNavigate } from 'react-router-dom'
 import * as Yup from 'yup'
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { setCredentials } from '../../store/slices/authSlice'
 import { useAddUserMutation } from '../../api/usersApi'
 import { useTranslation } from 'react-i18next'
+import { Button, Col, Row, Form, Container, Image } from 'react-bootstrap'
 
 const SignUpForm = () => {
   const { t } = useTranslation()
+  const inputRef = useRef(null)
   const [addUser] = useAddUserMutation()
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -17,8 +19,8 @@ const SignUpForm = () => {
     initialValues: { username: '', password: '', confirmPassword: '' },
     validationSchema: Yup.object({
       username: Yup.string().required(t('validation.required')).min(3, t('validation.minUsername')),
-      password: Yup.string().required('validation.required').min(6, t('validation.minPassword')),
-      confirmPassword: Yup.string().required('validation.required').oneOf([Yup.ref('password'), null], t('validation.confirm')),
+      password: Yup.string().required(t('validation.required')).min(6, t('validation.minPassword')),
+      confirmPassword: Yup.string().required(t('validation.required')).oneOf([Yup.ref('password'), null], t('validation.confirm')),
     }),
     onSubmit: async (values) => {
       try {
@@ -30,34 +32,84 @@ const SignUpForm = () => {
       }
       catch (err) {
         if (err.status === 409) {
-          setError('Логин занят!')
+          setError(t(''))
         }
       }
     },
   })
 
   return (
-    <form onSubmit={formik.handleSubmit} className="w-50">
-      <h1 className="text-center mb-4">{t('auth.registration')}</h1>
-      <div className="form-floating mb-3">
-        <input onChange={formik.handleChange} value={formik.values.username} placeholder="От 3 до 20 символов" name="username" autoComplete="username" id="username" className="form-control" />
-        <label className="form-label" htmlFor="username">{formik.errors.username ?? t('auth.username')}</label>
-        <div className="invalid-feedback m-0 p-0">{formik.errors.username}</div>
-      </div>
-      <div className="form-floating mb-3">
-        <input onChange={formik.handleChange} value={formik.values.password} placeholder="Не менее 6 символов" name="password" aria-describedby="passwordHelpBlock" autoComplete="new-password" type="password" id="password" className="form-control" />
-        {/* <div className="invalid-tooltip">Обязательное поле</div> */}
-        <label className="form-label" htmlFor="password">{formik.errors.password ?? t('auth.password')}</label>
-      </div>
-      <div className="form-floating mb-4">
-        <input onChange={formik.handleChange} value={formik.values.confirmPassword} placeholder="Пароли должны совпадать" name="confirmPassword" autoComplete="new-password" type="password" id="confirmPassword" className="form-control" />
-        {/* <div className="invalid-tooltip"></div> */}
-        <label className="form-label" htmlFor="confirmPassword">{formik.errors.confirmPassword ?? t('auth.confirmPassword')}</label>
-      </div>
-      <button type="submit" className="w-100 btn btn-outline-primary">{t('auth.signUp')}</button>
-      {error ? <div className="text-danger">{error}</div> : null}
-    </form>
 
+
+    <Container>
+      <Form onSubmit={formik.handleSubmit}>
+        <Row>
+          <Col md="6">
+            <Image src="/images/chat.png" className="img-fluid overflow-hidden" roundedCircle alt={t('auth.signUp')} />
+          </Col>
+          <Col md="6">
+            <Form.Group
+              as={Col}
+              controlId="username"
+              className="position-relative mb-3"
+            >
+              <h1 className="text-center mb-4">{t('auth.registration')}</h1>
+              <Form.Label visuallyHidden>{t('auth.username')}</Form.Label>
+              <Form.Control
+                ref={inputRef}
+                style={{ height: '60px' }}
+                type="text"
+                name="username"
+                placeholder={t('auth.username')}
+                value={formik.values.username}
+                onChange={formik.handleChange}
+                isInvalid={!!formik.errors.username}
+              />
+              <Form.Control.Feedback type="invalid" tooltip>{formik.errors.username}</Form.Control.Feedback>
+            </Form.Group>
+            <Form.Group
+              as={Col}
+              controlId="password"
+              className="position-relative"
+            >
+              <Form.Label visuallyHidden>{t('auth.password')}</Form.Label>
+              <Form.Control
+                style={{ height: '60px' }}
+                type="password"
+                name="password"
+                value={formik.values.password}
+                placeholder={t('auth.password')}
+                onChange={formik.handleChange}
+                isInvalid={!!formik.errors.password && formik.touched.password}
+              />
+              <Form.Control.Feedback type="invalid" tooltip>{formik.errors.password}</Form.Control.Feedback>
+            </Form.Group>
+
+            <Form.Group
+              as={Col}
+              controlId="confirmPassword"
+              className="position-relative"
+            >
+              <Form.Label visuallyHidden>{t('auth.confirmPassword')}</Form.Label>
+              <Form.Control
+                style={{ height: '60px' }}
+                type="password"
+                name="confirmPassword"
+                value={formik.values.confirmpPssword}
+                placeholder={t('auth.confirmPassword')}
+                onChange={formik.handleChange}
+                isInvalid={!!formik.errors.confirmPassword || !!error}
+              />
+              <Form.Control.Feedback type="invalid" tooltip>{formik.errors.confirmPassword || t(`${error}`)}</Form.Control.Feedback>
+            </Form.Group>
+            <Form.Group as={Col}>
+              <Button variant="outline-primary" className="mt-3 mb-3 w-100" type="submit">{t('auth.signUp')}</Button>
+            </Form.Group>
+          </Col>
+        </Row>
+
+      </Form>
+    </Container>
   )
 }
 

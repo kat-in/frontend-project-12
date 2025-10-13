@@ -10,7 +10,7 @@ import { ChannelContext } from '../contexts/ChannelContext'
 import Channels from '../components/chat/channels/Channels'
 import MessageForm from '../components/chat/messages/MessageForm'
 import Messages from '../components/chat/messages/Messages'
-import modalType from '../components/chat/modal/modalMode'
+import modalType from '../utils/modalMode'
 import { useTranslation } from 'react-i18next'
 
 const Chat = ({ socket }) => {
