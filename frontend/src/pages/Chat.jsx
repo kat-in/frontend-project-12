@@ -64,6 +64,10 @@ const Chat = () => {
 
 
     const handleNewMessage = (payload) => {
+      console.log('📨 Получено новое сообщение через сокет:', payload);
+      console.log('👤 Текущий пользователь:', user);
+      console.log('🆔 ID сообщения:', payload.id);
+      console.log('💬 Текст сообщения:', payload.body);
 
       dispatch(
         messagesApi.util.updateQueryData('getMessages', undefined, (draft) => {
