@@ -18,14 +18,14 @@ const ModalContainer = ({ formik }) => {
   const inputClassnames = cn('mb-2', 'form-control', { 'is-invalid': formik.errors.name })
   const input = modalMode === 'remove'
     ? (
-      <>
-        <p className="lead">{t('chat.areYouShure:')}</p>
-        <input
-          ref={inputEl}
-          style={{ position: 'absolute', opacity: 0, height: 0, width: 0 }}
-        />
-      </>
-    )
+        <>
+          <p className="lead">{t('chat.areYouShure:')}</p>
+          <input
+            ref={inputEl}
+            style={{ position: 'absolute', opacity: 0, height: 0, width: 0 }}
+          />
+        </>
+      )
     : <input ref={inputEl} onChange={formik.handleChange} value={formik.values.name} name="name" id="name" className={inputClassnames} />
   const buttonColor = modalMode === 'remove' ? 'danger' : 'primary'
 
