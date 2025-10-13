@@ -19,7 +19,7 @@ const MessageForm = ({ channelId, username }) => {
       const cleanMessage = leoProfanity.clean(values.body)
 
       try {
-        const result = await addMessage({ body: cleanMessage, channelId, username }).unwrap()
+        await addMessage({ body: cleanMessage, channelId, username }).unwrap()
         formik.resetForm()
       }
       catch (err) {
