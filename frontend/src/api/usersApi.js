@@ -22,4 +22,3 @@ export const usersApi = createApi({
 })
 
 export const { useAddUserMutation, useLoginUserMutation } = usersApi
-
