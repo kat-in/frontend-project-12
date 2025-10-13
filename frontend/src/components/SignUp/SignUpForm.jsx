@@ -31,8 +31,11 @@ const SignUpForm = () => {
         navigate('/')
       }
       catch (err) {
-        if (err.status === 409) {
-          setError(t('auth.userExist'))
+        if (err?.originalStatus === 409 || err?.status === 409) {
+          setError('auth.userExist')
+          formik.setFieldError('username', t('auth.userExist'))
+        } else {
+          setError('errors.serverError')
         }
       }
     },
@@ -97,12 +100,12 @@ const SignUpForm = () => {
                 style={{ height: '60px' }}
                 type="password"
                 name="confirmPassword"
-                value={formik.values.confirmpPssword}
+                value={formik.values.confirmPassword}
                 placeholder={t('auth.confirmPassword')}
                 onChange={formik.handleChange}
                 isInvalid={!!formik.errors.confirmPassword || !!error}
               />
-              <Form.Control.Feedback type="invalid" tooltip>{formik.errors.confirmPassword || t(`${error}`)}</Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid" tooltip>{formik.errors.confirmPassword || (error ? t(error) : '')}</Form.Control.Feedback>
             </Form.Group>
             <Form.Group as={Col}>
               <Button variant="outline-primary" className="mt-3 mb-3 w-100" type="submit">{t('auth.signUp')}</Button>
