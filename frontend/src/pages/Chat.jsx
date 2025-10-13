@@ -25,7 +25,7 @@ const Chat = () => {
   // const token = useSelector(state => state.auth.token)
   const user = useSelector(state => state.auth.user)
   const { data: channels } = useGetChannelsQuery()
-  const { data: messages } = useGetMessagesQuery()
+  const { data: messages = [], isSuccess } = useGetMessagesQuery()
 
   const { setIsModal, modalMode, setModalMode, setModalData } = useContext(ModalContext)
   const { activeChannelId, setActiveDropdownId } = useContext(ChannelContext)
@@ -56,13 +56,14 @@ const Chat = () => {
   }, [token, navigate, dispatch, channels, messages])
 
   useEffect(() => {
-
+  if (!isSuccess) return; 
     socket.on('connect', () => {
       console.log('✅ Сокет подключён! id:', socket.id);
     });
 
 
     const handleNewMessage = (payload) => {
+      
       dispatch(
         messagesApi.util.updateQueryData('getMessages', undefined, (draft) => {
           draft.push(payload)
