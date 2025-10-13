@@ -26,7 +26,6 @@ export const messagesApi = createApi({
           updateCachedData(draft => {
             draft.push(newMessage)
           })
-          dispatch(messagesApi.util.invalidateTags(['Messages']))
         }
 
         socket.on('newMessage', messageHandler)
