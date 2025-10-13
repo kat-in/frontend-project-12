@@ -38,6 +38,7 @@ const SignUpForm = () => {
           formik.setFieldError('password', ' ')
           inputRef.current.focus()
           inputRef.current.select()
+          navigate('/')
         } else {
           formik.setStatus(t('errors.serverError'))
         }
