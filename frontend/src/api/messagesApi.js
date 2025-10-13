@@ -20,30 +20,31 @@ export const messagesApi = createApi({
       query: () => '',
       providesTags: ['Messages'],
       pollingInterval: 1000,
-      addMessage: builder.mutation({
-        query: message => ({
-          method: 'POST',
-          body: message,
-        }),
-        invalidatesTags: ['Messages'],
-      }),
-      editMessage: builder.mutation({
-        query: ({ id, body }) => ({
-          method: 'PATCH',
-          body,
-          url: id,
-        }),
-        invalidatesTags: ['Messages'],
-      }),
-      removeMessage: builder.mutation({
-        query: id => ({
-          method: 'DELETE',
-          url: id,
-        }),
-        invalidatesTags: ['Messages'],
-      }),
     }),
-  })
+    addMessage: builder.mutation({
+      query: message => ({
+        method: 'POST',
+        body: message,
+      }),
+      invalidatesTags: ['Messages'],
+    }),
+    editMessage: builder.mutation({
+      query: ({ id, body }) => ({
+        method: 'PATCH',
+        body,
+        url: id,
+      }),
+      invalidatesTags: ['Messages'],
+    }),
+    removeMessage: builder.mutation({
+      query: id => ({
+        method: 'DELETE',
+        url: id,
+      }),
+      invalidatesTags: ['Messages'],
+    }),
+  }),
+})
 
 export const { useGetMessagesQuery, useAddMessageMutation, useEditMessageMutation, useRemoveMessageMutation } = messagesApi
 // END
