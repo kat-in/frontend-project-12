@@ -36,12 +36,9 @@ const Add = () => {
         notify(t('errors.offLine'), 'error')
         return
       }
-      if (leoProfanity.check(values.name)) {
-        notify(t('errors.badWord'), 'error')
-        return
-      }
+      const cleanChannel = leoProfanity.clean(values.name)
       try {
-        const response = await addChannel(values).unwrap()
+        const response = await addChannel({name: cleanChannel}).unwrap()
         formik.resetForm()
         setIsModal(false)
         setActiveChannelId(response.id)
