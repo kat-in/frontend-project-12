@@ -1,7 +1,7 @@
 import { useEffect, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useGetChannelsQuery } from '../api/channelsApi'
-import { useGetMessagesQuery } from '../api/messagesApi'
+import { useGetMessagesQuery, messagesApi } from '../api/messagesApi'
 import { useDispatch, useSelector } from 'react-redux'
 import { setChannels, addChannel, removeChannel, renameChannel } from '../store/slices/channelsSlice'
 import { setMessages, addMessage } from '../store/slices/messagesSlice'
@@ -55,8 +55,12 @@ const Chat = () => {
 
   useEffect(() => {
     const handleNewMessage = (payload) => {
-      dispatch(addMessage(payload))
-        refetch()
+      dispatch(
+        messagesApi.util.updateQueryData('getMessages', undefined, draft => {
+          draft.push(payload)
+        }))
+    //   dispatch(addMessage(payload))
+    //     refetch()
     }
 
     const handleNewChannel = (payload) => {
