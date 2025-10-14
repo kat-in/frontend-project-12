@@ -6,8 +6,8 @@ export default (t, channels) => Yup.object({
     .min(3, t('validation.minMax'))
     .max(20, t('validation.minMax'))
     .test(
-        'Unique',
-        t('modal.isUnique'),
-        value => !channels.some(ch => ch.name === value),
+      'Unique',
+      t('modal.isUnique'),
+      value => !channels.some(ch => ch.name === value),
     ),
 })

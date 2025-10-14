@@ -24,7 +24,7 @@ const LoginForm = () => {
       localStorage.setItem('token', response.token)
       localStorage.setItem('user', response.username)
       navigate('/')
-    }  
+    }
     catch (err) {
       setError(err.data.message)
     }
