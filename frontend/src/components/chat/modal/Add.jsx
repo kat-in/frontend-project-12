@@ -1,5 +1,4 @@
 import { useFormik } from 'formik'
-import * as Yup from 'yup'
 import { useAddChannelMutation, useGetChannelsQuery, channelsApi } from '../../../api/channelsApi'
 import { useContext } from 'react'
 import { ModalContext } from '../../../contexts/ModalContext'
@@ -9,6 +8,7 @@ import { useTranslation } from 'react-i18next'
 import notify from '../../../utils/notify'
 import leoProfanity from 'leo-profanity'
 import { useDispatch } from 'react-redux'
+import validationSchema from '../../../validation'
 
 const Add = () => {
   const { t } = useTranslation()
@@ -21,17 +21,7 @@ const Add = () => {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: { name: '' },
-    validationSchema: Yup.object({
-      name: Yup.string()
-        .required(t('validation.required'))
-        .min(3, t('validation.minMax'))
-        .max(20, t('validation.minMax'))
-        .test(
-          'Unique',
-          t('modal.isUnique'),
-          value => !channels.some(ch => ch.name === value),
-        ),
-    }),
+    validationSchema: validationSchema(t, 'add', channels),
     onSubmit: async (values) => {
       const cleanChannel = leoProfanity.clean(values.name)
       try {

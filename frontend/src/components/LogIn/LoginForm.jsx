@@ -1,6 +1,5 @@
 import { useFormik } from 'formik'
 import { useNavigate } from 'react-router-dom'
-import * as Yup from 'yup'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { setCredentials } from '../../store/slices/authSlice.js'
@@ -8,6 +7,7 @@ import { useLoginUserMutation } from '../../api/usersApi.js'
 import { useTranslation } from 'react-i18next'
 import { useRef, useEffect } from 'react'
 import { Button, Col, Row, Form, Container, Image } from 'react-bootstrap'
+import validationSchema from '../../validation/index.js'
 
 const LoginForm = () => {
   const { t } = useTranslation()
@@ -19,10 +19,7 @@ const LoginForm = () => {
 
   const formik = useFormik({
     initialValues: { username: '', password: '' },
-    validationSchema: Yup.object({
-      username: Yup.string().required(t('validation.required')),
-      password: Yup.string().required(t('validation.required')),
-    }),
+    validationSchema: validationSchema(t, 'login'),
     onSubmit: async (values) => {
       try {
         const response = await loginUser(values).unwrap()

@@ -1,5 +1,4 @@
 import { useFormik } from 'formik'
-import * as Yup from 'yup'
 import { useEditChannelMutation, useGetChannelsQuery, channelsApi } from '../../../api/channelsApi'
 import { useContext } from 'react'
 import { ModalContext } from '../../../contexts/ModalContext'
@@ -7,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 import ModalContainer from './ModalContainer'
 import notify from '../../../utils/notify'
 import { useDispatch } from 'react-redux'
+  import validationSchema from '../../../validation'
 
 const Rename = () => {
   const [editChannel] = useEditChannelMutation()
@@ -18,17 +18,7 @@ const Rename = () => {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: { name: modalData.channelName },
-    validationSchema: Yup.object({
-      name: Yup.string()
-        .required(t('validation.required'))
-        .min(3, t('validation.minMax'))
-        .max(20, t('validation.minMax'))
-        .test(
-          'Unique',
-          t('modal.isUnique'),
-          value => !channels.some(ch => ch.name === value && ch.id !== modalData.channelId),
-        ),
-    }),
+    validationSchema: validationSchema(t, 'rename', channels, modalData),
     onSubmit: async (values) => {
       const id = modalData.channelId
 

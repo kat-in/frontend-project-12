@@ -1,12 +1,12 @@
 import { useFormik } from 'formik'
 import { useNavigate } from 'react-router-dom'
-import * as Yup from 'yup'
 import { useRef, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { setCredentials } from '../../store/slices/authSlice'
 import { useAddUserMutation } from '../../api/usersApi'
 import { useTranslation } from 'react-i18next'
 import { Button, Col, Row, Form, Container, Image } from 'react-bootstrap'
+import validationSchema from '../../validation'
 
 const SignUpForm = () => {
   const { t } = useTranslation()
@@ -16,11 +16,7 @@ const SignUpForm = () => {
   const dispatch = useDispatch()
   const formik = useFormik({
     initialValues: { username: '', password: '', confirmPassword: '' },
-    validationSchema: Yup.object({
-      username: Yup.string().required(t('validation.required')).min(3, t('validation.minMax')).max(20, t('validation.minMax')),
-      password: Yup.string().required(t('validation.required')).min(6, t('validation.minPassword')),
-      confirmPassword: Yup.string().required(t('validation.required')).oneOf([Yup.ref('password'), null], t('validation.confirm')),
-    }),
+    validationSchema: validationSchema(t, 'signup'),
     onSubmit: async (values) => {
       try {
         const response = await addUser({ username: values.username, password: values.password }).unwrap()
