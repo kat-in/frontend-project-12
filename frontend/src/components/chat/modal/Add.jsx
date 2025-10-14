@@ -19,23 +19,23 @@ const Add = () => {
   const { setActiveChannelId } = useContext(ChannelContext)
 
   const handleSubmitAdd = async (values) => {
-      const cleanChannel = leoProfanity.clean(values.name)
-      try {
-        const newChannel = await addChannel({ name: cleanChannel }).unwrap()
-        dispatch(
-          channelsApi.util.updateQueryData('getChannels', undefined, (draft) => {
-            draft.push(newChannel)
-          }),
-        )
-        formik.resetForm()
-        setIsModal(false)
-        setActiveChannelId(newChannel.id)
-        notify(t('toast.addChannel'), 'success')
-      }
-      catch (err) {
-        notify(err, 'error')
-      }
+    const cleanChannel = leoProfanity.clean(values.name)
+    try {
+      const newChannel = await addChannel({ name: cleanChannel }).unwrap()
+      dispatch(
+        channelsApi.util.updateQueryData('getChannels', undefined, (draft) => {
+          draft.push(newChannel)
+        }),
+      )
+      formik.resetForm()
+      setIsModal(false)
+      setActiveChannelId(newChannel.id)
+      notify(t('toast.addChannel'), 'success')
     }
+    catch (err) {
+      notify(err, 'error')
+    }
+  }
 
   const formik = useFormik({
     enableReinitialize: true,

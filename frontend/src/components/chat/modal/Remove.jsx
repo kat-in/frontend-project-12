@@ -15,18 +15,18 @@ const Remove = () => {
   const { setActiveChannelId } = useContext(ChannelContext)
 
   const handleSubmitRemove = async () => {
-      const id = modalData.channelId
-      try {
-        await removeChannel(id).unwrap()
-        formik.resetForm()
-        setActiveChannelId('1')
-        setIsModal(false)
-        notify(t('toast.removeChannel'), 'success')
-      }
-      catch (err) {
-        notify(err, 'error')
-      }
+    const id = modalData.channelId
+    try {
+      await removeChannel(id).unwrap()
+      formik.resetForm()
+      setActiveChannelId('1')
+      setIsModal(false)
+      notify(t('toast.removeChannel'), 'success')
     }
+    catch (err) {
+      notify(err, 'error')
+    }
+  }
 
   const formik = useFormik({
     initialValues: { name: '' },

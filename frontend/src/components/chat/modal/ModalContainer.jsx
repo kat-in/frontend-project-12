@@ -26,7 +26,7 @@ const ModalContainer = ({ formik }) => {
           />
         </>
       )
-    : <input ref={inputEl} onChange={formik.handleChange} value={formik.values.name} name="name"  autoComplete="off" id="name" className={inputClassnames} />
+    : <input ref={inputEl} onChange={formik.handleChange} value={formik.values.name} name="name" autoComplete="off" id="name" className={inputClassnames} />
   const buttonColor = modalMode === 'remove' ? 'danger' : 'primary'
 
   useEffect(() => {

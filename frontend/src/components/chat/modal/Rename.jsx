@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import ModalContainer from './ModalContainer'
 import notify from '../../../utils/notify'
 import { useDispatch } from 'react-redux'
-  import validationSchema from '../../../validation'
+import validationSchema from '../../../validation'
 
 const Rename = () => {
   const [editChannel] = useEditChannelMutation()
@@ -16,23 +16,23 @@ const Rename = () => {
   const { t } = useTranslation()
 
   const handleSubmitRename = async (values) => {
-      const id = modalData.channelId
-      try {
-        const newChannel = await editChannel({ name: values.name, id }).unwrap()
-        dispatch(
-          channelsApi.util.updateQueryData('getChannels', undefined, (draft) => {
-            const ch = draft.find(c => c.id === id)
-            if (ch) ch.name = newChannel.name
-          }),
-        )
-        formik.resetForm()
-        setIsModal(false)
-        notify(t('toast.renameChannel'), 'success')
-      }
-      catch (err) {
-        notify(err, 'error')
-      }
+    const id = modalData.channelId
+    try {
+      const newChannel = await editChannel({ name: values.name, id }).unwrap()
+      dispatch(
+        channelsApi.util.updateQueryData('getChannels', undefined, (draft) => {
+          const ch = draft.find(c => c.id === id)
+          if (ch) ch.name = newChannel.name
+        }),
+      )
+      formik.resetForm()
+      setIsModal(false)
+      notify(t('toast.renameChannel'), 'success')
     }
+    catch (err) {
+      notify(err, 'error')
+    }
+  }
 
   const formik = useFormik({
     enableReinitialize: true,

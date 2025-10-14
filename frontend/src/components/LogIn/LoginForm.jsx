@@ -18,17 +18,17 @@ const LoginForm = () => {
   const [error, setError] = useState(null)
 
   const handleSubmitLogin = async (values) => {
-      try {
-        const response = await loginUser(values).unwrap()
-        dispatch(setCredentials(response))
-        localStorage.setItem('token', response.token)
-        localStorage.setItem('user', response.username)
-        navigate('/')
-      }
-      catch (err) {
-        setError(err.data.message)
-      }
+    try {
+      const response = await loginUser(values).unwrap()
+      dispatch(setCredentials(response))
+      localStorage.setItem('token', response.token)
+      localStorage.setItem('user', response.username)
+      navigate('/')
+    }  
+    catch (err) {
+      setError(err.data.message)
     }
+  }
 
   const formik = useFormik({
     initialValues: { username: '', password: '' },
