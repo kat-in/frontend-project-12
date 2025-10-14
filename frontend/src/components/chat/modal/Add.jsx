@@ -18,11 +18,7 @@ const Add = () => {
   const { data: channels = [] } = useGetChannelsQuery()
   const { setActiveChannelId } = useContext(ChannelContext)
 
-  const formik = useFormik({
-    enableReinitialize: true,
-    initialValues: { name: '' },
-    validationSchema: validationSchema(t, 'add', channels),
-    onSubmit: async (values) => {
+  const handleSubmitAdd = async (values) => {
       const cleanChannel = leoProfanity.clean(values.name)
       try {
         const newChannel = await addChannel({ name: cleanChannel }).unwrap()
@@ -39,7 +35,13 @@ const Add = () => {
       catch (err) {
         notify(err, 'error')
       }
-    },
+    }
+
+  const formik = useFormik({
+    enableReinitialize: true,
+    initialValues: { name: '' },
+    validationSchema: validationSchema(t, 'add', channels),
+    onSubmit: handleSubmitAdd,
   })
 
   return <ModalContainer formik={formik} />

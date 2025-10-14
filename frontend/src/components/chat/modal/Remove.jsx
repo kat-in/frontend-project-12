@@ -14,9 +14,7 @@ const Remove = () => {
   const { setIsModal, modalData } = useContext(ModalContext)
   const { setActiveChannelId } = useContext(ChannelContext)
 
-  const formik = useFormik({
-    initialValues: { name: '' },
-    onSubmit: async () => {
+  const handleSubmitRemove = async () => {
       const id = modalData.channelId
       try {
         await removeChannel(id).unwrap()
@@ -28,7 +26,11 @@ const Remove = () => {
       catch (err) {
         notify(err, 'error')
       }
-    },
+    }
+
+  const formik = useFormik({
+    initialValues: { name: '' },
+    onSubmit: handleSubmitRemove,
   })
 
   return <ModalContainer formik={formik} />

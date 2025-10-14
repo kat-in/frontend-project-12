@@ -17,10 +17,7 @@ const LoginForm = () => {
   const [loginUser] = useLoginUserMutation()
   const [error, setError] = useState(null)
 
-  const formik = useFormik({
-    initialValues: { username: '', password: '' },
-    validationSchema: validationSchema(t, 'login'),
-    onSubmit: async (values) => {
+  const handleSubmitLogin = async (values) => {
       try {
         const response = await loginUser(values).unwrap()
         dispatch(setCredentials(response))
@@ -31,7 +28,12 @@ const LoginForm = () => {
       catch (err) {
         setError(err.data.message)
       }
-    },
+    }
+
+  const formik = useFormik({
+    initialValues: { username: '', password: '' },
+    validationSchema: validationSchema(t, 'login'),
+    onSubmit: handleSubmitLogin,
   })
 
   useEffect(() => {
@@ -59,6 +61,7 @@ const LoginForm = () => {
                 style={{ height: '60px' }}
                 type="text"
                 name="username"
+                autoComplete="off"
                 placeholder={t('auth.yourNikname')}
                 value={formik.values.username}
                 onChange={formik.handleChange}
@@ -76,6 +79,7 @@ const LoginForm = () => {
                 style={{ height: '60px' }}
                 type="password"
                 name="password"
+                autoComplete="off"
                 value={formik.values.password}
                 placeholder={t('auth.password')}
                 onChange={formik.handleChange}

@@ -15,13 +15,8 @@ const Rename = () => {
   const { setIsModal, modalData } = useContext(ModalContext)
   const { t } = useTranslation()
 
-  const formik = useFormik({
-    enableReinitialize: true,
-    initialValues: { name: modalData.channelName },
-    validationSchema: validationSchema(t, 'rename', channels, modalData),
-    onSubmit: async (values) => {
+  const handleSubmitRename = async (values) => {
       const id = modalData.channelId
-
       try {
         const newChannel = await editChannel({ name: values.name, id }).unwrap()
         dispatch(
@@ -37,7 +32,13 @@ const Rename = () => {
       catch (err) {
         notify(err, 'error')
       }
-    },
+    }
+
+  const formik = useFormik({
+    enableReinitialize: true,
+    initialValues: { name: modalData.channelName },
+    validationSchema: validationSchema(t, 'rename', channels, modalData),
+    onSubmit: handleSubmitRename,
   })
 
   return <ModalContainer formik={formik} />

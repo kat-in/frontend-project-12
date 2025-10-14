@@ -14,32 +14,33 @@ const SignUpForm = () => {
   const [addUser] = useAddUserMutation()
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const handleSubmitSignup = async (values) => {
+    try {
+      const response = await addUser({ username: values.username, password: values.password }).unwrap()
+      dispatch(setCredentials(response))
+      localStorage.setItem('token', response.token)
+      localStorage.setItem('user', response.username)
+      navigate('/')
+    }
+    catch (err) {
+      if (err.status === 409) {
+        formik.setStatus(t('auth.userExists'))
+        formik.setFieldError('username', ' ')
+        formik.setFieldError('password', ' ')
+        formik.setFieldError('confirmPassword', t('auth.userExists'))
+        inputRef.current.focus()
+        inputRef.current.select()
+      }
+      else {
+        formik.setFieldError('confirmPassword', t('auth.userExists'))
+      }
+    }
+  }
+
   const formik = useFormik({
     initialValues: { username: '', password: '', confirmPassword: '' },
     validationSchema: validationSchema(t, 'signup'),
-    onSubmit: async (values) => {
-      try {
-        const response = await addUser({ username: values.username, password: values.password }).unwrap()
-        dispatch(setCredentials(response))
-        localStorage.setItem('token', response.token)
-        localStorage.setItem('user', response.username)
-        navigate('/')
-      }
-      catch (err) {
-        if (err.status === 409) {
-          console.log(formik.errors.username)
-          formik.setStatus(t('auth.userExists'))
-          formik.setFieldError('username', ' ')
-          formik.setFieldError('password', ' ')
-          formik.setFieldError('confirmPassword', t('auth.userExists'))
-          inputRef.current.focus()
-          inputRef.current.select()
-        }
-        else {
-          formik.setFieldError('confirmPassword', t('auth.userExists'))
-        }
-      }
-    },
+    onSubmit: handleSubmitSignup,
   })
 
   useEffect(() => {
@@ -67,6 +68,7 @@ const SignUpForm = () => {
                 style={{ height: '60px' }}
                 type="text"
                 name="username"
+                autoComplete="off"
                 placeholder={t('auth.username')}
                 value={formik.values.username}
                 onChange={formik.handleChange}
@@ -84,6 +86,7 @@ const SignUpForm = () => {
                 style={{ height: '60px' }}
                 type="password"
                 name="password"
+                autoComplete="off"
                 value={formik.values.password}
                 placeholder={t('auth.password')}
                 onChange={formik.handleChange}
@@ -103,6 +106,7 @@ const SignUpForm = () => {
                 type="password"
                 name="confirmPassword"
                 className="mt-3"
+                autoComplete="off"
                 value={formik.values.confirmPassword}
                 placeholder={t('auth.confirmPassword')}
                 onChange={formik.handleChange}
